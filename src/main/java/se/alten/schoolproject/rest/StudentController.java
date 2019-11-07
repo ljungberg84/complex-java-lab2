@@ -15,6 +15,8 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @Stateless
 @NoArgsConstructor
 @Path("/student")
@@ -24,7 +26,7 @@ public class StudentController {
     private SchoolAccessLocal sal;
 
     @GET
-    @Produces({"application/JSON"})
+    @Produces(APPLICATION_JSON)
     public Response showStudents() {
         try {
             List students = sal.listAllStudents();
@@ -35,15 +37,15 @@ public class StudentController {
     }
 
     @GET//not implemented
-    @Produces({"application/Json"})
+    @Produces(APPLICATION_JSON)
     @Path("/{id}")
     public Response getStudent(){
         return Response.noContent().build();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({"application/JSON"})
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     /**
      * JavaDoc
      */

@@ -7,7 +7,6 @@ import se.alten.schoolproject.transaction.StudentTransactionAccess;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NegativeOrZero;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Stream;

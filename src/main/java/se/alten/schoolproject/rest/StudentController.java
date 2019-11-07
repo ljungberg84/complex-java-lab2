@@ -1,5 +1,6 @@
 package se.alten.schoolproject.rest;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.model.StudentModel;
@@ -7,8 +8,11 @@ import se.alten.schoolproject.model.StudentModel;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
 
 @Stateless
@@ -30,19 +34,27 @@ public class StudentController {
         }
     }
 
+    @GET//not implemented
+    @Produces({"application/Json"})
+    @Path("/{id}")
+    public Response getStudent(){
+        return Response.noContent().build();
+    }
+
     @POST
-    //@Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/JSON"})
     /**
      * JavaDoc
      */
-    public Response addStudent(String studentModel) {
+    public Response addStudent(String studentModel, @Context UriInfo uriInfo) {
+
         try {
 
-            StudentModel answer = sal.addStudent(studentModel);
+            StudentModel student = sal.addStudent(studentModel);
+            URI createdURI = uriInfo.getBaseUriBuilder().path(student.getId()).build();
 
-            return Response.status(Response.Status.OK).entity(answer).build();
+            return Response.created(createdURI).build();
 
 
 //            switch ( answer.getForename()) {
@@ -59,7 +71,7 @@ public class StudentController {
         }
     }
 
-    @DELETE
+    @DELETE//use id to delete instead?
     @Path("{email}")
     public Response deleteUser( @PathParam("email") String email) {
         try {

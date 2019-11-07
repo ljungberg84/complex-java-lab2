@@ -9,7 +9,6 @@ import javax.json.JsonReader;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.io.StringReader;
 
@@ -24,7 +23,7 @@ public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
     @NotNull(message = "Forename cannot be null")
     @Column(name = "forename")

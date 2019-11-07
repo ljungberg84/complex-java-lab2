@@ -6,6 +6,9 @@ import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NegativeOrZero;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,7 +27,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel addStudent(String newStudent) {
+    public StudentModel addStudent(@NotNull String newStudent) {
         Student studentToAdd = student.toEntity(newStudent);
         boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isBlank);
 
@@ -38,17 +41,17 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public void removeStudent(String studentEmail) {
+    public void removeStudent(@Email @NotNull String studentEmail) {
         studentTransactionAccess.removeStudent(studentEmail);
     }
 
     @Override
-    public void updateStudent(String forename, String lastname, String email) {
+    public void updateStudent(@NotNull String forename, @NotNull String lastname, @Email @NotNull String email) {
         studentTransactionAccess.updateStudent(forename, lastname, email);
     }
 
     @Override
-    public void updateStudentPartial(String studentModel) {
+    public void updateStudentPartial(@NotNull String studentModel) {
         Student studentToUpdate = student.toEntity(studentModel);
         studentTransactionAccess.updateStudentPartial(studentToUpdate);
     }

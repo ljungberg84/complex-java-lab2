@@ -7,6 +7,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.io.StringReader;
 
@@ -23,12 +24,15 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //@NotNull
     @Column(name = "forename")
     private String forename;
 
+    //@NotNull
     @Column(name = "lastname")
     private String lastname;
 
+    //@NotNull
     @Column(name = "email", unique = true)
     private String email;
 

@@ -31,7 +31,7 @@ public class StudentController {
     }
 
     @POST
-    @Path("/add")
+    //@Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/JSON"})
     /**
@@ -42,14 +42,18 @@ public class StudentController {
 
             StudentModel answer = sal.addStudent(studentModel);
 
-            switch ( answer.getForename()) {
-                case "empty":
-                    return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
-                case "duplicate":
-                    return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
-                default:
-                    return Response.ok(answer).build();
-            }
+            return Response.status(Response.Status.OK).entity(answer).build();
+
+
+//            switch ( answer.getForename()) {
+//                    //return Response.status(Response.Status.OK).entity(answer).build();
+//                case "empty":
+//                    return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
+//                case "duplicate":
+//                    return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
+//                default:
+//                    return Response.ok(answer).build();
+//            }
         } catch ( Exception e ) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

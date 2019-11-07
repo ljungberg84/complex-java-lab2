@@ -8,6 +8,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.io.StringReader;
 
@@ -24,15 +25,16 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //@NotNull
+    @NotNull
     @Column(name = "forename")
     private String forename;
 
-    //@NotNull
+    @NotNull
     @Column(name = "lastname")
     private String lastname;
 
-    //@NotNull
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
     @Column(name = "email", unique = true)
     private String email;
 

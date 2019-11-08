@@ -9,6 +9,7 @@ import javax.json.JsonReader;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.io.StringReader;
 
@@ -20,6 +21,7 @@ import java.io.StringReader;
 @Setter
 @ToString
 public class Student implements Serializable {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,14 +37,15 @@ public class Student implements Serializable {
 
     @NotNull
     @Email(message = "Email should be valid")
+    //@Pattern(regexp = "^(.+)@(.+)$")
     @Column(name = "email", unique = true)
     private String email;
 
     public Student(@NotNull(message = "Forename cannot be null") String forename, @NotNull(message = "Lastname cannot be null") String lastname,  @Email(message = "Email should be valid") String email) {
         this.forename = forename;
         this.lastname = lastname;
-        if(email == null)
-            throw new NullPointerException();
+        //if(email == null)
+            //throw new NullPointerException();
         this.email = email;
     }
 

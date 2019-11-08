@@ -16,6 +16,7 @@ public class StudentModel {
     private String email;
 
     public StudentModel toModel(Student student) {
+
         StudentModel studentModel = new StudentModel();
         switch (student.getForename()) {
             case "empty":

@@ -28,6 +28,7 @@ public class StudentController {
     @GET
     @Produces(APPLICATION_JSON)
     public Response showStudents() {
+
         try {
             List students = sal.listAllStudents();
             return Response.ok(students).build();
@@ -76,6 +77,7 @@ public class StudentController {
     @DELETE//use id to delete instead?
     @Path("{email}")
     public Response deleteUser( @PathParam("email") String email) {
+
         try {
             sal.removeStudent(email);
             return Response.ok().build();
@@ -86,11 +88,13 @@ public class StudentController {
 
     @PUT
     public void updateStudent( @QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
+
         sal.updateStudent(forename, lastname, email);
     }
 
     @PATCH
     public void updatePartialAStudent(String studentModel) {
+
         sal.updateStudentPartial(studentModel);
     }
 }

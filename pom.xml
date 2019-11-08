@@ -114,7 +114,7 @@
             <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
             <version>2.2.0.Final</version>
-            <scope>test</scope>
+<!--            <scope>test</scope>-->
         </dependency>
 
 
@@ -147,8 +147,8 @@
     </build>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <testcontainers.version>1.12.2</testcontainers.version>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>

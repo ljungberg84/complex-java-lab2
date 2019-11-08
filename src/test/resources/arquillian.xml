@@ -4,7 +4,7 @@
 
     <container qualifier="wildfly-managed" default="true">
         <configuration>
-            <property name="jbossHome">C:\Users\Carl\wildfly-10.1.0.Final</property>
+            <property name="jbossHome">C:\Users\Carl\wildfly-18.0.0.Final</property>
             <property name="managementPort">10990</property>
             <property name="javaVmArguments">-Xms512m -Xmx1024m -XX:MaxPermSize=512m -Djboss.socket.binding.port-offset=1000</property>
         </configuration>

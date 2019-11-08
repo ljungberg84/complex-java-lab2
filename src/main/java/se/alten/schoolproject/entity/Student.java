@@ -38,6 +38,14 @@ public class Student implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
+    public Student(@NotNull(message = "Forename cannot be null") String forename, @NotNull(message = "Lastname cannot be null") String lastname,  @Email(message = "Email should be valid") String email) {
+        this.forename = forename;
+        this.lastname = lastname;
+        if(email == null)
+            throw new NullPointerException();
+        this.email = email;
+    }
+
     public Student toEntity(String studentModel) {
         JsonReader reader = Json.createReader(new StringReader(studentModel));
 

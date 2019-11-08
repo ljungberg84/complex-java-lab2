@@ -8,44 +8,36 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
 
-//@RunWith(Arquillian.class)
+@RunWith(Arquillian.class)
 public class StudentTest {
 
-    //@Deployment
+    @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Student.class)
+                //.addClass(AssertionFailedError.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    //@Test
+    @Test
     public void createValidStudentTest() {
 
         String name = "test";
         String lastName = "test2";
         String email = "test@gmail.com";
 
-        System.out.println("-------------------------------------------------");
-        System.out.println("test");
-        System.out.println("--------------------------------------------------");
-
-        Student student = new Student("123", name, lastName, email);
-
-        System.out.println(student.getForename());
-        System.out.println(student.getLastname());
-        System.out.println(student.getEmail());
+        Student student = new Student( name, lastName, email);
 
         assert(student.getForename().equals(name));
-        assert(student.getForename().equals(lastName));
+        assert(student.getLastname().equals(lastName));
         assert (student.getEmail().equals(email));
     }
 
-    //@Test(expected = Exception.class)
+    @Test(expected = NullPointerException.class)
     public void createWithInvalidEmailTest(){
 
-        Student student = new Student("123", "sven", "andersson", null);
+        Student student = new Student( "sven", "andersson", null);
     }
 
 }

@@ -1,5 +1,6 @@
 package se.alten.schoolproject.entity;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import lombok.*;
 import se.alten.schoolproject.model.StudentModel;
 
@@ -35,8 +36,8 @@ public class Student implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @NotNull
-    @Email(message = "Email should be valid")
+    //@NotNull
+    //@Email(message = "Email should be valid")
     //@Pattern(regexp = "^(.+)@(.+)$")
     @Column(name = "email", unique = true)
     private String email;
@@ -44,8 +45,9 @@ public class Student implements Serializable {
     public Student(@NotNull(message = "Forename cannot be null") String forename, @NotNull(message = "Lastname cannot be null") String lastname,  @Email(message = "Email should be valid") String email) {
         this.forename = forename;
         this.lastname = lastname;
-        //if(email == null)
-            //throw new NullPointerException();
+        if(email == null)
+            throw new IllegalArgumentException("must not be null!!!");
+
         this.email = email;
     }
 

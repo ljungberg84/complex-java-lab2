@@ -29,6 +29,8 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response showStudents() {
 
+        //throw new IllegalArgumentException("foo");
+
         try {
             List students = sal.listAllStudents();
             return Response.ok(students).build();

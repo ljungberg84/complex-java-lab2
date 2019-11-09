@@ -26,7 +26,6 @@ public class StudentTest {
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Student.class)
-                //.addClass(AssertionFailedError.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -38,7 +37,7 @@ public class StudentTest {
     }
 
 
-    //@Test
+    @Test
     public void createValidStudentTest() {
 
         String name = "test";
@@ -59,11 +58,13 @@ public class StudentTest {
 //        Student student = new Student( "sven", "andersson", null);
 //    }
 
+    //----------------Student bean validation tests----------------------------
+    //-------------------------------------------------------------------------
 
-    //@Test
+    @Test
     public void createWithInvalidEmailTest(){
 
-        Student student = new Student( "sven", "andersson",  "ivalidEmail");
+        Student student = new Student( "sven", "andersson",  "invalidEmail");
         List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
         ConstraintViolation<Student> violation = violations.get(0);
 
@@ -79,16 +80,16 @@ public class StudentTest {
 
         Student student = new Student( "sven", "andersson",  null);
         List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
-        ConstraintViolation<Student> violation = violations.get(0);
 
+        ConstraintViolation<Student> violation = violations.get(0);
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();
 
-        //assertEquals("{javax.validation.constraints.NotNull.message}", validatorMessage);
-        //assertEquals("email", propertyPath.toString());
+        assertEquals("{javax.validation.constraints.NotNull.message}", validatorMessage);
+        assertEquals("email", propertyPath.toString());
     }
 
-    //@Test
+    @Test
     public void createWithNullNameTest(){
 
         Student student = new Student( null, "andersson",  "svenne@gmail.com");

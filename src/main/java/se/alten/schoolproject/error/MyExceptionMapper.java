@@ -1,9 +1,8 @@
-package se.alten.schoolproject.errorhandling;
+package se.alten.schoolproject.error;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.logging.Logger;
 
 @Provider
 public class MyExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
@@ -13,6 +12,7 @@ public class MyExceptionMapper implements ExceptionMapper<IllegalArgumentExcepti
     @Override
     public Response toResponse(IllegalArgumentException e) {
 
+       // throw new IllegalStateException("foo3");
 
         System.out.println("------------------------------------------------");
         System.out.println("in illegal arg exception!!");

@@ -3,13 +3,19 @@ package se.alten.schoolproject.error;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.logging.Logger;
 
 @Provider
 public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
 
+    private static final Logger logger = Logger.getLogger("GeneralExceptionMapper");
+
+
     @Override
     public Response toResponse(Exception e) {
 
-        return Response.status(Response.Status.CONFLICT).entity(("Error: " + e.getMessage())).build();
+        logger.info(e.getMessage());
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(("Error: " + e.getMessage())).build();
     }
 }

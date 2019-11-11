@@ -16,10 +16,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     private static final Logger logger = Logger.getLogger("SchoolDataAccess");
 
-
-    //private Student student = new Student();
-    //private StudentModel studentModel = new StudentModel();
-
     @Inject
     StudentTransactionAccess studentTransactionAccess;
 
@@ -29,17 +25,11 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
         return studentTransactionAccess.listAllStudents();
     }
 
-    //StudentModel
     @Override
     public StudentModel addStudent(String newStudent) throws ResourceCreationException {
 
-        //Student studentToAdd = student.create(newStudent);
-        logger.info("1");
-
         StudentModel studentModel = StudentModel.create(newStudent);
-        logger.info("2");
         Student persistedEntity = studentTransactionAccess.addStudent(Student.create(studentModel));
-        logger.info("3");
 
         return StudentModel.create(persistedEntity);
 

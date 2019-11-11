@@ -39,6 +39,7 @@ public class StudentTransaction implements StudentTransactionAccess{
             logger.info("2");
 
             entityManager.flush();
+            logger.info("3");
 
 
             return studentToAdd;

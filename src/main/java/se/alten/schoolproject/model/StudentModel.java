@@ -13,6 +13,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StudentModel {
+public class StudentModel implements Serializable {
 
     private static final Logger logger = Logger.getLogger("StudentModel");
 

@@ -66,7 +66,7 @@ public class StudentController {
     @DELETE
     @Produces(APPLICATION_JSON)
     @Path("/{email}")
-    public Response deleteUser( @PathParam("email") String email) {
+    public Response deleteUser( @PathParam("email") String email) throws Exception{
 
         schoolAccessLocal.removeStudent(email);
 
@@ -86,10 +86,10 @@ public class StudentController {
 
         return Response.status(Response.Status.OK).entity(createdURI).build();
     }
-
-
-    @PATCH
-    public void updatePartialAStudent(String studentModel) {
-        schoolAccessLocal.updateStudentPartial(studentModel);
-    }
+//    @PATCH
+//    @Path("/{email}")
+//    public void updatePartialStudent(String studentModel) {
+//
+//        schoolAccessLocal.updateStudentPartial(studentModel);
+//    }
 }

@@ -1,12 +1,14 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,9 +21,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     StudentTransactionAccess studentTransactionAccess;
 
     @Override
-    public List listAllStudents(){
+    public List<StudentModel> listAllStudents() throws Exception{
 
-        return studentTransactionAccess.listAllStudents();
+        List<Student> students = studentTransactionAccess.listAllStudents();
+        List<StudentModel> studentModels = new ArrayList<>();
+        students.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(student ->
+                studentModels.add(StudentModel.create(student)), Exception.class));
+
+        return studentModels;
     }
 
     @Override
@@ -42,7 +49,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public void removeStudent(String studentEmail) {
+    public void removeStudent(String studentEmail) throws Exception{
 
         studentTransactionAccess.removeStudent(studentEmail);
     }

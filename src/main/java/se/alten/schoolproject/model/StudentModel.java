@@ -2,7 +2,7 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.ResourceCreationException;
+import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import javax.json.Json;
 import javax.json.JsonObject;

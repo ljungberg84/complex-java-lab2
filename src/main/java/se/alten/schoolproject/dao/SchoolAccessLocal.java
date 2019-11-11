@@ -15,7 +15,7 @@ public interface SchoolAccessLocal {
 
     StudentModel getStudent(String email) throws Exception;
 
-    void removeStudent(String email);
+    void removeStudent(String email) throws Exception;
 
     StudentModel updateStudent(StudentModel student) throws Exception;
 

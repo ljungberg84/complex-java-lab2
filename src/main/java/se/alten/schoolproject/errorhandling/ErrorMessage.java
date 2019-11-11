@@ -1,4 +1,4 @@
-package se.alten.schoolproject.error;
+package se.alten.schoolproject.errorhandling;
 
 import lombok.*;
 

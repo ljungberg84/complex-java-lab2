@@ -8,9 +8,9 @@ import java.util.List;
 @Local
 public interface StudentTransactionAccess {
     List listAllStudents();
-    Student getStudent(String email);
+    Student getStudent(String email) throws Exception;
     Student addStudent(Student studentToAdd) throws Exception;
-    void removeStudent(String email);
-    Student updateStudent(Student student);
-    void updateStudentPartial(Student studentToUpdate);
+    void removeStudent(String email) throws Exception;
+    Student updateStudent(Student student) throws Exception;
+    //void updateStudentPartial(Student studentToUpdate);
 }

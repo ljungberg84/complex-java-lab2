@@ -1,8 +1,8 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.ResourceCreationException;
-import se.alten.schoolproject.error.ResourceNotFoundException;
+import se.alten.schoolproject.errorhandling.ResourceCreationException;
+import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -13,26 +13,30 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static javax.transaction.Transactional.TxType.REQUIRED;
+
 @Stateless
 @Default
 public class StudentTransaction implements StudentTransactionAccess{
 
     private static final Logger logger = Logger.getLogger("StudentTransaction");
 
-
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
+
     @Override
-    public List listAllStudents() {
+    public List<Student> listAllStudents() {
 
         Query query = entityManager.createQuery("SELECT s from Student s");
 
         return query.getResultList();
     }
 
+
     @Override
-    public Student getStudent(String email) {
+    public Student getStudent(String email) throws Exception {
+
         try{
             Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
             query.setParameter("email", email);
@@ -46,10 +50,10 @@ public class StudentTransaction implements StudentTransactionAccess{
         }
     }
 
-    @Override
-    public Student addStudent(Student student) {
 
-        //removed try catch PersistantException round this method
+    @Override
+    public Student addStudent(Student student) throws Exception{
+
         Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
         query.setParameter("email", student.getEmail());
         if(!query.getResultList().isEmpty()){
@@ -63,9 +67,10 @@ public class StudentTransaction implements StudentTransactionAccess{
         return student;
     }
 
+
     @Override
-    public void removeStudent(String email) {
-        //Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+    public void removeStudent(String email) throws Exception{
+
         try{
             Student student = getStudent(email);
             entityManager.remove(student);
@@ -76,18 +81,12 @@ public class StudentTransaction implements StudentTransactionAccess{
             logger.info(e.getMessage());
             throw new ResourceNotFoundException(e.getMessage());
         }
-
-
-        //Native Query
-        //Query query = entityManager.createNativeQuery("DELETE FROM student WHERE email = :email", Student.class);
-
-//        query.setParameter("email", email)
-//             .executeUpdate();
     }
 
-    @Transactional
+
     @Override
-    public Student updateStudent(Student student) {
+    @Transactional(REQUIRED)
+    public Student updateStudent(Student student) throws Exception{
 
         try{
             removeStudent(student.getEmail());
@@ -97,19 +96,21 @@ public class StudentTransaction implements StudentTransactionAccess{
             return updatedStudent;
 
         }catch(Exception e){
+
             logger.info(student + " " + e.getMessage());
             throw new ResourceCreationException(e.getMessage());
         }
     }
 
-    @Override
-    public void updateStudentPartial(Student student) {
-        Student studentFound = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
-                .setParameter("email", student.getEmail()).getSingleResult();
-
-        Query query = entityManager.createQuery("UPDATE Student SET forename = :studentForename WHERE email = :email");
-        query.setParameter("studentForename", student.getFirstName())
-                .setParameter("email", studentFound.getEmail())
-                .executeUpdate();
-    }
+//
+//    @Override
+//    public void updateStudentPartial(Student student) {
+//        Student studentFound = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+//                .setParameter("email", student.getEmail()).getSingleResult();
+//
+//        Query query = entityManager.createQuery("UPDATE Student SET forename = :studentForename WHERE email = :email");
+//        query.setParameter("studentForename", student.getFirstName())
+//                .setParameter("email", studentFound.getEmail())
+//                .executeUpdate();
+//    }
 }

@@ -1,6 +1,7 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.error.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
@@ -30,14 +31,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     //StudentModel
     @Override
-    public StudentModel addStudent(String newStudent) {
+    public StudentModel addStudent(String newStudent) throws ResourceCreationException {
 
-        //Student studentToAdd = student.toEntity(newStudent);
+        //Student studentToAdd = student.create(newStudent);
         logger.info("1");
 
         StudentModel studentModel = StudentModel.create(newStudent);
         logger.info("2");
-        Student persistedEntity = studentTransactionAccess.addStudent(Student.toEntity(studentModel));
+        Student persistedEntity = studentTransactionAccess.addStudent(Student.create(studentModel));
         logger.info("3");
 
         return StudentModel.create(persistedEntity);
@@ -70,7 +71,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Override
     public void updateStudentPartial( String studentModel) {
-//        Student studentToUpdate = student.toEntity(studentModel);
+//        Student studentToUpdate = student.create(studentModel);
 //        studentTransactionAccess.updateStudentPartial(studentToUpdate);
     }
 }

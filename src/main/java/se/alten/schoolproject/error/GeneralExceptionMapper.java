@@ -9,6 +9,7 @@ public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
 
     @Override
     public Response toResponse(Exception e) {
-        return Response.status(Response.Status.BAD_REQUEST).entity((e.getMessage())).build();
+
+        return Response.status(Response.Status.CONFLICT).entity(("Error: " + e.getMessage())).build();
     }
 }

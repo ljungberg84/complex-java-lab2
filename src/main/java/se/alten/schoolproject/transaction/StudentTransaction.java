@@ -9,29 +9,49 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 @Default
 public class StudentTransaction implements StudentTransactionAccess{
+
+    private static final Logger logger = Logger.getLogger("StudentTransaction");
+
 
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
     @Override
     public List listAllStudents() {
+
         Query query = entityManager.createQuery("SELECT s from Student s");
+
         return query.getResultList();
     }
 
+
     @Override
     public Student addStudent(Student studentToAdd) {
+
         try {
+            logger.info("1");
             entityManager.persist(studentToAdd);
+            logger.info("2");
+
             entityManager.flush();
+
+
             return studentToAdd;
+
         } catch ( PersistenceException pe ) {
-            studentToAdd.setForename("duplicate");
-            return studentToAdd;
+            logger.info("4");
+            logger.info(pe.getMessage());
+
+
+            throw new PersistenceException();
+            //studentToAdd.setFirstName("duplicate");
+
+            //return studentToAdd;
         }
     }
 
@@ -62,7 +82,7 @@ public class StudentTransaction implements StudentTransactionAccess{
                 .setParameter("email", student.getEmail()).getSingleResult();
 
         Query query = entityManager.createQuery("UPDATE Student SET forename = :studentForename WHERE email = :email");
-        query.setParameter("studentForename", student.getForename())
+        query.setParameter("studentForename", student.getFirstName())
                 .setParameter("email", studentFound.getEmail())
                 .executeUpdate();
     }

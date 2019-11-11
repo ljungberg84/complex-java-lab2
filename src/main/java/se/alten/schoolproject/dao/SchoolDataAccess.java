@@ -6,37 +6,56 @@ import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.logging.Logger;
 
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
-    private Student student = new Student();
-    private StudentModel studentModel = new StudentModel();
+    private static final Logger logger = Logger.getLogger("SchoolDataAccess");
+
+
+    //private Student student = new Student();
+    //private StudentModel studentModel = new StudentModel();
 
     @Inject
     StudentTransactionAccess studentTransactionAccess;
 
     @Override
     public List listAllStudents(){
+
         return studentTransactionAccess.listAllStudents();
     }
 
+    //StudentModel
     @Override
     public StudentModel addStudent(String newStudent) {
-        Student studentToAdd = student.toEntity(newStudent);
-        boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isEmpty);
 
-        if (checkForEmptyVariables) {
-            studentToAdd.setForename("empty");
-            return studentModel.toModel(studentToAdd);
-        } else {
-            studentTransactionAccess.addStudent(studentToAdd);
-            return studentModel.toModel(studentToAdd);
-        }
+        //Student studentToAdd = student.toEntity(newStudent);
+        logger.info("1");
+
+        StudentModel studentModel = StudentModel.create(newStudent);
+        logger.info("2");
+        Student persistedEntity = studentTransactionAccess.addStudent(Student.toEntity(studentModel));
+        logger.info("3");
+
+        return StudentModel.create(persistedEntity);
+
+
+//        //boolean checkForEmptyVariables = Stream.of(studentToAdd.getFirstName(), studentToAdd.getLastName(), studentToAdd.getEmail()).anyMatch(String::isEmpty);
+//
+//        if (checkForEmptyVariables) {
+//
+//            throw new IllegalArgumentException("empty variables in add Student, SchoolDataAcess");
+//            //studentToAdd.setFirstName("empty");
+//            //return studentModel.create(studentToAdd);
+//        } else {
+//
+//            studentTransactionAccess.addStudent(studentToAdd);
+//
+//            return studentModel.create(studentToAdd);
+//        }
     }
 
     @Override
@@ -51,7 +70,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Override
     public void updateStudentPartial( String studentModel) {
-        Student studentToUpdate = student.toEntity(studentModel);
-        studentTransactionAccess.updateStudentPartial(studentToUpdate);
+//        Student studentToUpdate = student.toEntity(studentModel);
+//        studentTransactionAccess.updateStudentPartial(studentToUpdate);
     }
 }

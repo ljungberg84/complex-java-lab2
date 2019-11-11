@@ -6,13 +6,13 @@ import javax.ws.rs.ext.Provider;
 import java.util.logging.Logger;
 
 @Provider
-public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
+public class GeneralExceptionMapper implements ExceptionMapper <RuntimeException> {
 
     private static final Logger logger = Logger.getLogger("GeneralExceptionMapper");
 
 
     @Override
-    public Response toResponse(Exception e) {
+    public Response toResponse(RuntimeException e) {
 
         logger.info(e.getMessage());
         if(e instanceof MyException){
@@ -25,6 +25,10 @@ public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(e.getMessage())).build();
         }
 
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        if(e instanceof ResourceNotFoundException) {
+
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorMessage(e.getMessage())).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
     }
 }

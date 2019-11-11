@@ -2,7 +2,6 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.error.ResourceCreationException;
 
 import javax.json.Json;
@@ -29,7 +28,6 @@ public class StudentModel implements Serializable {
 
     private static final Logger logger = Logger.getLogger("StudentModel");
 
-    private int id;
     @NotEmpty(message = "firstName cannot be null")
     private String firstName;
 
@@ -41,7 +39,7 @@ public class StudentModel implements Serializable {
     private String email;
 
 
-    public static StudentModel create(String student ) throws MyException {
+    public static StudentModel create(String student ) throws Exception {
 
         try (JsonReader reader = Json.createReader(new StringReader(student))){
 
@@ -58,12 +56,12 @@ public class StudentModel implements Serializable {
 
         }catch(NullPointerException e){
 
-            throw new MyException("Failed to create studentModel: invalid request-body");
+            throw new ResourceCreationException("Failed to create studentModel: invalid request-body");
         }
     }
 
 
-    public static StudentModel create(Student student ) throws MyException {
+    public static StudentModel create(Student student ) throws Exception {
 
         StudentModel studentModel = new StudentModel();
 
@@ -77,7 +75,7 @@ public class StudentModel implements Serializable {
     }
 
 
-    private void validate() throws MyException {
+    private void validate() throws Exception {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -87,7 +85,7 @@ public class StudentModel implements Serializable {
         if(!violations.isEmpty()){
 
             //TODO: throw custom exception here
-            throw new MyException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
+            throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
         }
     }
 }

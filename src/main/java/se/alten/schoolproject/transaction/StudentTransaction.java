@@ -2,13 +2,14 @@ package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.error.ResourceCreationException;
+import se.alten.schoolproject.error.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,43 +31,75 @@ public class StudentTransaction implements StudentTransactionAccess{
         return query.getResultList();
     }
 
+    @Override
+    public Student getStudent(String email) {
+        try{
+            Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
+            query.setParameter("email", email);
+
+            return (Student)query.getSingleResult();
+
+        }catch(Exception e){
+
+            logger.info(e.getMessage());
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+    }
 
     @Override
-    public Student addStudent(Student studentToAdd) throws Exception{
+    public Student addStudent(Student student) {
 
         //removed try catch PersistantException round this method
         Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
-        query.setParameter("email", studentToAdd.getEmail());
+        query.setParameter("email", student.getEmail());
         if(!query.getResultList().isEmpty()){
 
             throw new ResourceCreationException("Record containing email already exist");
         }
 
-        entityManager.persist(studentToAdd);
+        entityManager.persist(student);
         entityManager.flush();
 
-        return studentToAdd;
+        return student;
     }
 
     @Override
-    public void removeStudent(String student) {
-        //JPQL Query
-        Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+    public void removeStudent(String email) {
+        //Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+        try{
+            Student student = getStudent(email);
+            entityManager.remove(student);
+            entityManager.flush();
+
+        }catch(Exception e){
+
+            logger.info(e.getMessage());
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+
 
         //Native Query
         //Query query = entityManager.createNativeQuery("DELETE FROM student WHERE email = :email", Student.class);
 
-        query.setParameter("email", student)
-             .executeUpdate();
+//        query.setParameter("email", email)
+//             .executeUpdate();
     }
 
+    @Transactional
     @Override
-    public void updateStudent(String forename, String lastname, String email) {
-        Query updateQuery = entityManager.createQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email", Student.class);
-        updateQuery.setParameter("forename", forename)
-                   .setParameter("lastname", lastname)
-                   .setParameter("email", email)
-                   .executeUpdate();
+    public Student updateStudent(Student student) {
+
+        try{
+            removeStudent(student.getEmail());
+            Student updatedStudent = entityManager.merge(student);
+            entityManager.flush();
+
+            return updatedStudent;
+
+        }catch(Exception e){
+            logger.info(student + " " + e.getMessage());
+            throw new ResourceCreationException(e.getMessage());
+        }
     }
 
     @Override

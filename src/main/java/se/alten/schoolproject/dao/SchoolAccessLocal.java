@@ -1,7 +1,5 @@
 package se.alten.schoolproject.dao;
 
-import se.alten.schoolproject.error.MyException;
-import se.alten.schoolproject.error.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Local;
@@ -15,9 +13,11 @@ public interface SchoolAccessLocal {
     //originally studentModel return type
     StudentModel addStudent(StudentModel studentModel) throws Exception;
 
-    void removeStudent(String student);
+    StudentModel getStudent(String email) throws Exception;
 
-    void updateStudent(String forename, String lastname, String email);
+    void removeStudent(String email);
+
+    StudentModel updateStudent(StudentModel student) throws Exception;
 
     void updateStudentPartial(String studentModel);
 }

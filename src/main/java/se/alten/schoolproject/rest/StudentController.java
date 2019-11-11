@@ -3,7 +3,6 @@ package se.alten.schoolproject.rest;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -42,9 +41,11 @@ public class StudentController {
     @GET
     @Produces(APPLICATION_JSON)
     @Path("/{email}")
-    public Response getStudent(){
+    public Response getStudent(@PathParam("email") String email) throws Exception{
 
-        return Response.noContent().build();
+        StudentModel student = schoolAccessLocal.getStudent(email);
+
+        return Response.status(Response.Status.OK).entity(student).build();
     }
 
 
@@ -54,16 +55,17 @@ public class StudentController {
     public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws Exception {
 
         StudentModel studentModel = StudentModel.create(requestBody);
+        StudentModel addedStudentModel = schoolAccessLocal.addStudent(studentModel);
 
-        StudentModel student = schoolAccessLocal.addStudent(studentModel);
-        URI createdURI = uriInfo.getBaseUriBuilder().path(student.getEmail()).build();
+        URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudentModel.getEmail()).build();
 
         return Response.status(Response.Status.CREATED).entity(createdURI).build();
     }
 
 
     @DELETE
-    @Path("{email}")
+    @Produces(APPLICATION_JSON)
+    @Path("/{email}")
     public Response deleteUser( @PathParam("email") String email) {
 
         schoolAccessLocal.removeStudent(email);
@@ -73,16 +75,17 @@ public class StudentController {
 
 
     @PUT
-    public void updateStudent( @QueryParam("firstName") String forename, @QueryParam("lastName") String lastname, @QueryParam("email") String email) {
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
+    public Response updateStudent( String requestBody, @Context UriInfo uriInfo) throws Exception {
 
-        schoolAccessLocal.updateStudent(forename, lastname, email);
+        StudentModel studentModel = StudentModel.create(requestBody);
+        StudentModel updatedStudentModel = schoolAccessLocal.updateStudent(studentModel);
+
+        URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudentModel.getEmail()).build();
+
+        return Response.status(Response.Status.OK).entity(createdURI).build();
     }
-
-//    @PUT
-//    public void updateStudent( @QueryParam("firstName") String forename, @QueryParam("lastName") String lastname, @QueryParam("email") String email) {
-//
-//        schoolAccessLocal.updateStudent(forename, lastname, email);
-//    }
 
 
     @PATCH

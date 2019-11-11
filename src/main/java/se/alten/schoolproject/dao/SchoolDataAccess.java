@@ -1,8 +1,6 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.MyException;
-import se.alten.schoolproject.error.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
@@ -27,6 +25,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
+    public StudentModel getStudent(String email) throws Exception{
+
+        Student student = studentTransactionAccess.getStudent(email);
+
+        return StudentModel.create(student);
+
+    }
+
+    @Override
     public StudentModel addStudent(StudentModel newStudent) throws Exception{
 
         Student persistedEntity = studentTransactionAccess.addStudent(Student.create(newStudent));
@@ -41,8 +48,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public void updateStudent( String forename,  String lastname, String email) {
-        studentTransactionAccess.updateStudent(forename, lastname, email);
+    public StudentModel updateStudent(StudentModel student) throws Exception{
+
+        StudentModel studentToUpdate = getStudent(student.getEmail());
+        studentToUpdate.setFirstName(student.getFirstName());
+        studentToUpdate.setLastName(student.getLastName());
+
+        Student updatedStudent = studentTransactionAccess.updateStudent(Student.create(student));
+
+        return StudentModel.create(updatedStudent);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.error.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
@@ -26,27 +27,11 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel addStudent(String newStudent) throws ResourceCreationException {
+    public StudentModel addStudent(StudentModel newStudent) throws MyException{
 
-        StudentModel studentModel = StudentModel.create(newStudent);
-        Student persistedEntity = studentTransactionAccess.addStudent(Student.create(studentModel));
+        Student persistedEntity = studentTransactionAccess.addStudent(Student.create(newStudent));
 
         return StudentModel.create(persistedEntity);
-
-
-//        //boolean checkForEmptyVariables = Stream.of(studentToAdd.getFirstName(), studentToAdd.getLastName(), studentToAdd.getEmail()).anyMatch(String::isEmpty);
-//
-//        if (checkForEmptyVariables) {
-//
-//            throw new IllegalArgumentException("empty variables in add Student, SchoolDataAcess");
-//            //studentToAdd.setFirstName("empty");
-//            //return studentModel.create(studentToAdd);
-//        } else {
-//
-//            studentTransactionAccess.addStudent(studentToAdd);
-//
-//            return studentModel.create(studentToAdd);
-//        }
     }
 
     @Override

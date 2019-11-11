@@ -2,6 +2,7 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.error.ResourceCreationException;
 
 import javax.json.Json;
@@ -29,16 +30,18 @@ public class StudentModel implements Serializable {
     private static final Logger logger = Logger.getLogger("StudentModel");
 
     private int id;
-    @NotEmpty
+    @NotEmpty(message = "firstName cannot be null")
     private String firstName;
-    @NotEmpty
+
+    @NotEmpty(message = "lastName must not be null")
     private String lastName;
-    @NotEmpty
-    @Email
+
+    @NotEmpty(message = "email must not be null")
+    @Email(message = "email must be valid format")
     private String email;
 
 
-    public static StudentModel create(String student ) throws ResourceCreationException {
+    public static StudentModel create(String student ) throws MyException {
 
         try (JsonReader reader = Json.createReader(new StringReader(student))){
 
@@ -55,12 +58,12 @@ public class StudentModel implements Serializable {
 
         }catch(NullPointerException e){
 
-            throw new ResourceCreationException("Failed to create studentModel: invalid request-body");
+            throw new MyException("Failed to create studentModel: invalid request-body");
         }
     }
 
 
-    public static StudentModel create(Student student ) throws ResourceCreationException {
+    public static StudentModel create(Student student ) throws MyException {
 
         StudentModel studentModel = new StudentModel();
 
@@ -74,7 +77,7 @@ public class StudentModel implements Serializable {
     }
 
 
-    private void validate() throws ResourceCreationException {
+    private void validate() throws MyException {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -84,8 +87,8 @@ public class StudentModel implements Serializable {
         if(!violations.isEmpty()){
 
             //TODO: throw custom exception here
-            throw new ResourceCreationException("Failed to create studentModel, invalid field: " +
-                    violations.get(0).getPropertyPath() + ", message: " + violations.get(0).getMessageTemplate());
+            throw new MyException("Failed to create studentModel, invalid field: " +
+                    violations.get(0).getPropertyPath() + ", message: " + violations.get(0).getMessage());
         }
     }
 }

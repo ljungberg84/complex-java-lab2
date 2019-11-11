@@ -1,5 +1,6 @@
 package se.alten.schoolproject.dao;
 
+import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.error.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 
@@ -12,7 +13,7 @@ public interface SchoolAccessLocal {
     List listAllStudents() throws Exception;
 
     //originally studentModel return type
-    StudentModel addStudent(String studentModel) throws ResourceCreationException;
+    StudentModel addStudent(StudentModel studentModel) throws MyException;
 
     void removeStudent(String student);
 

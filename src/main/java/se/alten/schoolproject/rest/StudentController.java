@@ -3,7 +3,7 @@ package se.alten.schoolproject.rest;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.error.ResourceCreationException;
+import se.alten.schoolproject.error.MyException;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -23,7 +23,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/student")
 public class StudentController {
 
-
     private static final Logger logger = Logger.getLogger("StudentController");
 
 
@@ -40,7 +39,7 @@ public class StudentController {
     }
 
 
-    @GET//not implemented
+    @GET
     @Produces(APPLICATION_JSON)
     @Path("/{email}")
     public Response getStudent(){
@@ -51,9 +50,13 @@ public class StudentController {
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws ResourceCreationException {
+    public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws MyException {
 
-        StudentModel student = schoolAccessLocal.addStudent(requestBody);
+        //TODO: handle if resource already exists
+
+        StudentModel studentModel = StudentModel.create(requestBody);
+
+        StudentModel student = schoolAccessLocal.addStudent(studentModel);
         URI createdURI = uriInfo.getBaseUriBuilder().path(student.getEmail()).build();
 
         return Response.status(Response.Status.CREATED).entity(createdURI).build();
@@ -67,6 +70,7 @@ public class StudentController {
         try {
             schoolAccessLocal.removeStudent(email);
             return Response.ok().build();
+
         } catch ( Exception e ) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

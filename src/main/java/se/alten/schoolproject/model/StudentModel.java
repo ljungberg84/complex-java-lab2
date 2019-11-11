@@ -87,8 +87,7 @@ public class StudentModel implements Serializable {
         if(!violations.isEmpty()){
 
             //TODO: throw custom exception here
-            throw new MyException("Failed to create studentModel, invalid field: " +
-                    violations.get(0).getPropertyPath() + ", message: " + violations.get(0).getMessage());
+            throw new MyException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
         }
     }
 }

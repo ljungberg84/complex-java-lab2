@@ -27,7 +27,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel addStudent(StudentModel newStudent) throws MyException{
+    public StudentModel addStudent(StudentModel newStudent) throws Exception{
 
         Student persistedEntity = studentTransactionAccess.addStudent(Student.create(newStudent));
 
@@ -36,6 +36,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Override
     public void removeStudent(String studentEmail) {
+
         studentTransactionAccess.removeStudent(studentEmail);
     }
 

@@ -13,7 +13,7 @@ public interface SchoolAccessLocal {
     List listAllStudents() throws Exception;
 
     //originally studentModel return type
-    StudentModel addStudent(StudentModel studentModel) throws MyException;
+    StudentModel addStudent(StudentModel studentModel) throws Exception;
 
     void removeStudent(String student);
 

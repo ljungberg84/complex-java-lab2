@@ -32,7 +32,7 @@ public class StudentController {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response showStudents() throws Exception{
+    public Response listStudents() throws Exception{
 
         List<Student> students = schoolAccessLocal.listAllStudents();
         return Response.ok(students).build();
@@ -43,6 +43,7 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     @Path("/{email}")
     public Response getStudent(){
+
         return Response.noContent().build();
     }
 
@@ -50,9 +51,7 @@ public class StudentController {
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws MyException {
-
-        //TODO: handle if resource already exists
+    public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws Exception {
 
         StudentModel studentModel = StudentModel.create(requestBody);
 
@@ -67,13 +66,9 @@ public class StudentController {
     @Path("{email}")
     public Response deleteUser( @PathParam("email") String email) {
 
-        try {
-            schoolAccessLocal.removeStudent(email);
-            return Response.ok().build();
+        schoolAccessLocal.removeStudent(email);
 
-        } catch ( Exception e ) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
 
@@ -81,5 +76,17 @@ public class StudentController {
     public void updateStudent( @QueryParam("firstName") String forename, @QueryParam("lastName") String lastname, @QueryParam("email") String email) {
 
         schoolAccessLocal.updateStudent(forename, lastname, email);
+    }
+
+//    @PUT
+//    public void updateStudent( @QueryParam("firstName") String forename, @QueryParam("lastName") String lastname, @QueryParam("email") String email) {
+//
+//        schoolAccessLocal.updateStudent(forename, lastname, email);
+//    }
+
+
+    @PATCH
+    public void updatePartialAStudent(String studentModel) {
+        schoolAccessLocal.updateStudentPartial(studentModel);
     }
 }

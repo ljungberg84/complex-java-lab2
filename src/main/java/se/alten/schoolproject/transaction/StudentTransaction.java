@@ -1,6 +1,7 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.error.ResourceCreationException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -31,29 +32,20 @@ public class StudentTransaction implements StudentTransactionAccess{
 
 
     @Override
-    public Student addStudent(Student studentToAdd) {
+    public Student addStudent(Student studentToAdd) throws Exception{
 
-        try {
-            logger.info("1");
-            entityManager.persist(studentToAdd);
-            logger.info("2");
+        //removed try catch PersistantException round this method
+        Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
+        query.setParameter("email", studentToAdd.getEmail());
+        if(!query.getResultList().isEmpty()){
 
-            entityManager.flush();
-            logger.info("3");
-
-
-            return studentToAdd;
-
-        } catch ( PersistenceException pe ) {
-            logger.info("4");
-            logger.info(pe.getMessage());
-
-
-            throw new PersistenceException();
-            //studentToAdd.setFirstName("duplicate");
-
-            //return studentToAdd;
+            throw new ResourceCreationException("Record containing email already exist");
         }
+
+        entityManager.persist(studentToAdd);
+        entityManager.flush();
+
+        return studentToAdd;
     }
 
     @Override

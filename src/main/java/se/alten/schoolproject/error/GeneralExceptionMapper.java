@@ -17,9 +17,14 @@ public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
         logger.info(e.getMessage());
         if(e instanceof MyException){
 
-            return Response.status(Response.Status.BAD_REQUEST).entity(("Error: " + e.getMessage())).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(e.getMessage())).build();
         }
 
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(("Error: " + e.getMessage())).build();
+        if(e instanceof ResourceCreationException){
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(e.getMessage())).build();
+        }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 }

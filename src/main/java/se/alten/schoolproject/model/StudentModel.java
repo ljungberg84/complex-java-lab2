@@ -84,7 +84,6 @@ public class StudentModel implements Serializable {
 
         if(!violations.isEmpty()){
 
-            //TODO: throw custom exception here
             throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
         }
     }

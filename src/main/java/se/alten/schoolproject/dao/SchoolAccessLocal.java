@@ -19,5 +19,5 @@ public interface SchoolAccessLocal {
 
     StudentModel updateStudent(StudentModel student) throws Exception;
 
-    void updateStudentPartial(String studentModel);
+    //void updateStudentPartial(String studentModel);
 }

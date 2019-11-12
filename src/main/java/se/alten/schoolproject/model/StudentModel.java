@@ -28,7 +28,7 @@ public class StudentModel implements Serializable {
 
     private static final Logger logger = Logger.getLogger("StudentModel");
 
-    @NotEmpty(message = "firstName cannot be null")
+    @NotEmpty(message = "firstName must not be null")
     private String firstName;
 
     @NotEmpty(message = "lastName must not be null")

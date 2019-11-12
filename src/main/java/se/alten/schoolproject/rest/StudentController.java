@@ -86,10 +86,4 @@ public class StudentController {
 
         return Response.status(Response.Status.OK).entity(createdURI).build();
     }
-//    @PATCH
-//    @Path("/{email}")
-//    public void updatePartialStudent(String studentModel) {
-//
-//        schoolAccessLocal.updateStudentPartial(studentModel);
-//    }
 }

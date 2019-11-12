@@ -65,10 +65,4 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         return StudentModel.create(updatedStudent);
     }
-
-    @Override
-    public void updateStudentPartial( String studentModel) {
-//        Student studentToUpdate = student.create(studentModel);
-//        studentTransactionAccess.updateStudentPartial(studentToUpdate);
-    }
 }

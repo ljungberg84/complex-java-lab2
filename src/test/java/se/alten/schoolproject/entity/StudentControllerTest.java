@@ -26,9 +26,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @RunWith(Arquillian.class)
 public class StudentControllerTest {
 
-
     @Deployment(testable = false)
     public static JavaArchive createDeployment() {
+
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Student.class)
                 .addClass(StudentModel.class)
@@ -54,10 +54,28 @@ public class StudentControllerTest {
     @Test
     @Consumes(APPLICATION_JSON)
     @RunAsClient
-    public void listStudentsTest(@ArquillianResteasyResource("school/students") final WebTarget webTarget){
+    public void listStudentsTest(@ArquillianResteasyResource("school/students") WebTarget webTarget){
 
-        System.out.println("------------------------------------------------------");
-        System.out.println(webTarget.getUriBuilder().toString());
-        System.out.println("------------------------------------------------------");
+    }
+
+    @Test
+    @Consumes(APPLICATION_JSON)
+    @RunAsClient
+    public void updateStudentTest(@ArquillianResteasyResource("school/students") WebTarget webTarget){
+
+    }
+
+    @Test
+    @Consumes(APPLICATION_JSON)
+    @RunAsClient
+    public void addStudentTest(@ArquillianResteasyResource("school/students") WebTarget webTarget){
+
+    }
+
+    @Test
+    @Consumes(APPLICATION_JSON)
+    @RunAsClient
+    public void removeStudentTest(@ArquillianResteasyResource("school/students") WebTarget webTarget){
+
     }
 }

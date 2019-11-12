@@ -108,12 +108,25 @@ public class studentModelTest {
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();
 
-        System.out.println("------------------------------------------------");
-        System.out.println(validatorMessage);
-        System.out.println(propertyPath);
-        System.out.println("------------------------------------------------");
-
-        assertEquals("firstName cannot be null", validatorMessage);
+        assertEquals("firstName must not be null", validatorMessage);
         assertEquals("firstName", propertyPath.toString());
+    }
+
+
+    @Test
+    public void createWithNullLastNameTest(){
+
+        StudentModel student = new StudentModel();
+        student.setFirstName("test");
+        student.setLastName(null);
+        student.setEmail("test@test.com");
+        List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
+        ConstraintViolation<StudentModel> violation = violations.get(0);
+
+        String validatorMessage = violation.getMessageTemplate();
+        Path propertyPath = violation.getPropertyPath();
+
+        assertEquals("lastName must not be null", validatorMessage);
+        assertEquals("lastName", propertyPath.toString());
     }
 }

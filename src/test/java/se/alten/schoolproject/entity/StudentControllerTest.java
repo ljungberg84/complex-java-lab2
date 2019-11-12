@@ -2,6 +2,7 @@ package se.alten.schoolproject.entity;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -17,7 +18,11 @@ import se.alten.schoolproject.rest.StudentController;
 import se.alten.schoolproject.transaction.StudentTransaction;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
-@RunAsClient
+import javax.ws.rs.Consumes;
+import javax.ws.rs.client.WebTarget;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @RunWith(Arquillian.class)
 public class StudentControllerTest {
 
@@ -47,7 +52,12 @@ public class StudentControllerTest {
 
 
     @Test
-    public void listStudentsTest(){
+    @Consumes(APPLICATION_JSON)
+    @RunAsClient
+    public void listStudentsTest(@ArquillianResteasyResource("school/students") final WebTarget webTarget){
 
+        System.out.println("------------------------------------------------------");
+        System.out.println(webTarget.getUriBuilder().toString());
+        System.out.println("------------------------------------------------------");
     }
 }

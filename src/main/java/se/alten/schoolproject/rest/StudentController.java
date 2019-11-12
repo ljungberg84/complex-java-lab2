@@ -19,7 +19,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
 @NoArgsConstructor
-@Path("/student")
+@Path("/students")
 public class StudentController {
 
     private static final Logger logger = Logger.getLogger("StudentController");

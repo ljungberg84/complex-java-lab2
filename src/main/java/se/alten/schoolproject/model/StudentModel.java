@@ -1,7 +1,9 @@
 package se.alten.schoolproject.model;
 
 import lombok.*;
+import org.eclipse.jgit.diff.HashedSequence;
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import javax.json.Json;
@@ -16,7 +18,9 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Getter
@@ -38,7 +42,9 @@ public class StudentModel implements Serializable {
     @Email(message = "email must be valid format")
     private String email;
 
+    private Set<SubjectModel> subjects = new HashSet<>();
 
+    //TODO: use jackson to parse to Model on all types?
     public static StudentModel create(String student ) throws Exception {
 
         try (JsonReader reader = Json.createReader(new StringReader(student))){
@@ -68,6 +74,9 @@ public class StudentModel implements Serializable {
         studentModel.setFirstName(student.getFirstName());
         studentModel.setLastName(student.getLastName());
         studentModel.setEmail(student.getEmail());
+
+        student.getSubjects().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subject ->
+                studentModel.getSubjects().add(SubjectModel.create(subject)), Exception.class));
 
         studentModel.validate();
 

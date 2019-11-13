@@ -18,8 +18,9 @@ import java.util.Set;
 @ToString
 public class Student implements Serializable {
 
+    //TODO: will id change when parsed from entity to model and back?
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "firstName")

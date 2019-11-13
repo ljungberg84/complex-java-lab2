@@ -29,9 +29,22 @@ public class StudentController {
     private SchoolAccessLocal schoolAccessLocal;
 
 
+//--------------------------------------------------------------------------------------
+// temp to check how id is handled for entity
+//    @GET
+//    @Produces(APPLICATION_JSON)
+//    public Response listStudents() throws Exception{
+//
+//        List<Student> students = schoolAccessLocal.listAllStudents();
+//        return Response.ok(students).build();
+//    }
+//--------------------------------------------------------------------------------------
+
+
+    // temp to check how id is handled for entity
     @GET
     @Produces(APPLICATION_JSON)
-    public Response listStudents() throws Exception{
+    public Response listStudents() throws Exception {
 
         List<Student> students = schoolAccessLocal.listAllStudents();
         return Response.ok(students).build();

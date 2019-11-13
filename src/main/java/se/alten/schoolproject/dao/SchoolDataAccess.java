@@ -25,16 +25,30 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Inject
     SubjectTransactionAccess subjectTransactionAccess;
 
+
+//--------------------------------------------------------------------------------------
+// temp to check how id is handled for entity
+//    @Override
+//    public List<StudentModel> listAllStudents() throws Exception{
+//
+//        List<Student> students = studentTransactionAccess.listAllStudents();
+//        List<StudentModel> studentModels = new ArrayList<>();
+//        students.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(student ->
+//                studentModels.add(StudentModel.create(student)), Exception.class));
+//
+//        return studentModels;
+//    }
+//--------------------------------------------------------------------------------------
+
+
     @Override
-    public List<StudentModel> listAllStudents() throws Exception{
+    public List<Student> listAllStudents() throws Exception{
 
         List<Student> students = studentTransactionAccess.listAllStudents();
-        List<StudentModel> studentModels = new ArrayList<>();
-        students.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(student ->
-                studentModels.add(StudentModel.create(student)), Exception.class));
 
-        return studentModels;
+        return students;
     }
+
 
     @Override
     public StudentModel getStudent(String email) throws Exception{
@@ -46,9 +60,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel addStudent(StudentModel newStudent) throws Exception{
+    public StudentModel addStudent(StudentModel studentModel) throws Exception{
 
-        Student persistedEntity = studentTransactionAccess.addStudent(Student.create(newStudent));
+        Student persistedEntity = studentTransactionAccess.addStudent(Student.create(studentModel));
 
         return StudentModel.create(persistedEntity);
     }
@@ -60,13 +74,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel updateStudent(StudentModel student) throws Exception{
+    public StudentModel updateStudent(StudentModel studentModel) throws Exception{
 
-        StudentModel studentToUpdate = getStudent(student.getEmail());
-        studentToUpdate.setFirstName(student.getFirstName());
-        studentToUpdate.setLastName(student.getLastName());
-
-        Student updatedStudent = studentTransactionAccess.updateStudent(Student.create(student));
+        Student updatedStudent = studentTransactionAccess.updateStudent(Student.create(studentModel));
 
         return StudentModel.create(updatedStudent);
     }

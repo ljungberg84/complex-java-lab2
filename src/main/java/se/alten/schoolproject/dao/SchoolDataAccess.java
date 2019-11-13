@@ -1,10 +1,12 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
+import se.alten.schoolproject.transaction.SubjectTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,6 +22,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Inject
     StudentTransactionAccess studentTransactionAccess;
+    @Inject
+    SubjectTransactionAccess subjectTransactionAccess;
 
     @Override
     public List<StudentModel> listAllStudents() throws Exception{
@@ -68,12 +72,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public List listAllSubjects() {
-        return null;
+    public List<Subject> listAllSubjects() {
+        List<Subject> subjects = subjectTransactionAccess.listAllSubjects();
+
+        return subjects;
     }
 
     @Override
-    public SubjectModel addSubject(String subjectModel) {
-        return null;
+    public SubjectModel addSubject(SubjectModel subjectModel)  throws Exception{
+        Subject addedSubject = subjectTransactionAccess.addSubject(Subject.create(subjectModel));
+        return SubjectModel.create(addedSubject);
     }
 }

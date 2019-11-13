@@ -6,7 +6,9 @@ import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,16 +18,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Subject {
+public class Subject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "subjects", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Student> students = new HashSet<>();
 
     public static Subject create(SubjectModel subjectModel) {
@@ -35,7 +37,6 @@ public class Subject {
 
         subjectModel.getStudents().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(studentModel ->
                 subject.getStudents().add(Student.create(studentModel)), Exception.class));
-
 
         return subject;
     }

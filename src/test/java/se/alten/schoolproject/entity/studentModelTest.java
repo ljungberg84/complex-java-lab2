@@ -8,8 +8,11 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
+import se.alten.schoolproject.errorhandling.ThrowingConsumer;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 
 import javax.validation.*;
 
@@ -25,12 +28,18 @@ public class studentModelTest {
 
     @Deployment
     public static JavaArchive createDeployment() {
+        
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Student.class)
                 .addClass(StudentModel.class)
                 .addClass(ResourceCreationException.class)
+                .addClass(Subject.class)
+                .addClass(SubjectModel.class)
+                .addClass(ThrowingConsumer.class)
+                .addClass(LambdaExceptionWrapper.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
+
 
     @Before
     public void setUp(){
@@ -39,8 +48,68 @@ public class studentModelTest {
         validator = factory.getValidator();
     }
 
+
+    //----------------Parse StudentModel to and from Student entity------------//
+    //-------------------------------------------------------------------------//
+
+
+    @Test
+    public void parseStudentModelToStudentEntityTest(){
+
+        Set<SubjectModel> subjectModels = new HashSet<>();
+        SubjectModel sub1 = new SubjectModel();
+        SubjectModel sub2 = new SubjectModel();
+        SubjectModel sub3 = new SubjectModel();
+
+        sub1.setTitle("math");
+        sub2.setTitle("geography");
+        sub3.setTitle("test");
+
+        subjectModels.add(sub1);
+        subjectModels.add(sub2);
+
+        StudentModel studentModel = new StudentModel();
+        studentModel.setFirstName("test");
+        studentModel.setLastName("test");
+        studentModel.setEmail("test@email.com");
+        studentModel.setSubjects(subjectModels);
+
+        Student student = Student.create(studentModel);
+        assertEquals(2, student.getSubjects().size());
+    }
+
+
+    @Test
+    public void parseStudentToStudentModelTest(){
+
+        Set<Subject> subjects = new HashSet<>();
+        Subject sub1 = new Subject();
+        Subject sub2 = new Subject();
+        sub1.setTitle("math");
+        sub2.setTitle("geography");
+
+        subjects.add(sub1);
+        subjects.add(sub2);
+
+        Student student = new Student();
+        student.setFirstName("test");
+        student.setLastName("test");
+        student.setEmail("test@email.com");
+        student.setSubjects(subjects);
+
+        try{
+            StudentModel studentModel = StudentModel.create(student);
+            assertEquals(2, studentModel.getSubjects().size());
+
+        }catch(Exception e){
+            fail();
+        }
+    }
+
+
     //----------------StudentModel bean validation tests-----------------------//
     //-------------------------------------------------------------------------//
+
 
     @Test
     public void createValidStudentTest() {
@@ -78,6 +147,7 @@ public class studentModelTest {
         assertEquals("email", propertyPath.toString());
     }
 
+
     @Test
     public void createWithNullEmailTest(){
 
@@ -94,6 +164,7 @@ public class studentModelTest {
         assertEquals("email must not be null", validatorMessage);
         assertEquals("email", propertyPath.toString());
     }
+
 
     @Test
     public void createWithNullNameTest(){

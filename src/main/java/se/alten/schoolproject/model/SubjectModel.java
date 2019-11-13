@@ -1,7 +1,6 @@
 package se.alten.schoolproject.model;
 
 import lombok.*;
-import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
@@ -15,28 +14,26 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SubjectModel {
+public class SubjectModel implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "title must not be null")
-    @Column
     private String title;
 
-    private Set<StudentModel> students;
+    private Set<StudentModel> students = new HashSet<>();
 
     public static SubjectModel create(String subject ) throws Exception {
 

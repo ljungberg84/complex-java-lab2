@@ -61,10 +61,10 @@ public class StudentTransaction implements StudentTransactionAccess{
             throw new ResourceCreationException("Record containing email already exist");
         }
 
-        entityManager.persist(student);
+        Student addedStudent = entityManager.merge(student);
         entityManager.flush();
 
-        return student;
+        return addedStudent;
     }
 
 

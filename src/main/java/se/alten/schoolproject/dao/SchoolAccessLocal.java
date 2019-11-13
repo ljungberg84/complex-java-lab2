@@ -25,5 +25,5 @@ public interface SchoolAccessLocal {
 
     List listAllSubjects();
 
-    SubjectModel addSubject(String subjectModel);
+    SubjectModel addSubject(SubjectModel subjectModel) throws Exception;
 }

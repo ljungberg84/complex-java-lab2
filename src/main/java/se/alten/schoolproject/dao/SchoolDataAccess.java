@@ -95,14 +95,17 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Override
     public List<Subject> listAllSubjects() {
+
         List<Subject> subjects = subjectTransactionAccess.listAllSubjects();
 
         return subjects;
     }
 
     @Override
-    public SubjectModel addSubject(SubjectModel subjectModel)  throws Exception{
-        Subject addedSubject = subjectTransactionAccess.addSubject(Subject.create(subjectModel));
+    public SubjectModel addSubject(Subject subject)  throws Exception{
+
+        Subject addedSubject = subjectTransactionAccess.addSubject(subject);
+
         return SubjectModel.create(addedSubject);
     }
 }

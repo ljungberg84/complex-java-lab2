@@ -1,6 +1,7 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 
@@ -26,5 +27,5 @@ public interface SchoolAccessLocal {
 
     List listAllSubjects();
 
-    SubjectModel addSubject(SubjectModel subjectModel) throws Exception;
+    SubjectModel addSubject(Subject subject) throws Exception;
 }

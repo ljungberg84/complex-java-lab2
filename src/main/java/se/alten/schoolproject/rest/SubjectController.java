@@ -35,10 +35,10 @@ public class SubjectController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addSubjects(String subject, @Context UriInfo uriInfo) throws Exception{
+    public Response addSubjects(String subjectBody, @Context UriInfo uriInfo) throws Exception{
 
-        SubjectModel subjectModel = SubjectModel.create(subject);
-        SubjectModel addedSubject = schoolAccessLocal.addSubject(subjectModel);
+        Subject subject = Subject.create(subjectBody);
+        SubjectModel addedSubject = schoolAccessLocal.addSubject(subject);
 
         return Response.status(Response.Status.CREATED).entity(addedSubject).build();
     }

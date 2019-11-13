@@ -35,24 +35,24 @@ public class SubjectModel implements Serializable {
 
     private Set<StudentModel> students = new HashSet<>();
 
-    public static SubjectModel create(String subject ) throws Exception {
-
-        try (JsonReader reader = Json.createReader(new StringReader(subject))) {
-
-            JsonObject jsonObject = reader.readObject();
-            SubjectModel subjectModel = new SubjectModel();
-
-            subjectModel.setTitle(jsonObject.getString("title"));
-
-            subjectModel.validate();
-
-            return subjectModel;
-
-        } catch (NullPointerException e) {
-
-            throw new ResourceCreationException("Failed to create subjectModel: invalid request-body");
-        }
-    }
+//    public static SubjectModel create(String subject ) throws Exception {
+//
+//        try (JsonReader reader = Json.createReader(new StringReader(subject))) {
+//
+//            JsonObject jsonObject = reader.readObject();
+//            SubjectModel subjectModel = new SubjectModel();
+//
+//            subjectModel.setTitle(jsonObject.getString("title"));
+//
+//            subjectModel.validate();
+//
+//            return subjectModel;
+//
+//        } catch (NullPointerException e) {
+//
+//            throw new ResourceCreationException("Failed to create subjectModel: invalid request-body");
+//        }
+//    }
 
 
     public static SubjectModel create(Subject subject ) throws Exception {

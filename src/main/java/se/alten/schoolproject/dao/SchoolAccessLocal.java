@@ -1,6 +1,7 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -19,5 +20,10 @@ public interface SchoolAccessLocal {
 
     StudentModel updateStudent(StudentModel student) throws Exception;
 
+
     //void updateStudentPartial(String studentModel);
+
+    List listAllSubjects();
+
+    SubjectModel addSubject(String subjectModel);
 }

@@ -44,27 +44,27 @@ public class StudentModel implements Serializable {
 
     private Set<SubjectModel> subjects = new HashSet<>();
 
-    //TODO: use jackson to parse to Model on all types?
-    public static StudentModel create(String student ) throws Exception {
-
-        try (JsonReader reader = Json.createReader(new StringReader(student))){
-
-            JsonObject jsonObject = reader.readObject();
-            StudentModel studentModel = new StudentModel();
-
-            studentModel.setFirstName(jsonObject.getString("firstName"));
-            studentModel.setLastName(jsonObject.getString("lastName"));
-            studentModel.setEmail(jsonObject.getString("email"));
-
-            studentModel.validate();
-
-            return studentModel;
-
-        }catch(NullPointerException e){
-
-            throw new ResourceCreationException("Failed to create studentModel: invalid request-body");
-        }
-    }
+//    //TODO: use jackson to parse to Model on all types?
+//    public static StudentModel create(String student ) throws Exception {
+//
+//        try (JsonReader reader = Json.createReader(new StringReader(student))){
+//
+//            JsonObject jsonObject = reader.readObject();
+//            StudentModel studentModel = new StudentModel();
+//
+//            studentModel.setFirstName(jsonObject.getString("firstName"));
+//            studentModel.setLastName(jsonObject.getString("lastName"));
+//            studentModel.setEmail(jsonObject.getString("email"));
+//
+//            studentModel.validate();
+//
+//            return studentModel;
+//
+//        }catch(NullPointerException e){
+//
+//            throw new ResourceCreationException("Failed to create studentModel: invalid request-body");
+//        }
+//    }
 
 
     public static StudentModel create(Student student ) throws Exception {
@@ -78,7 +78,7 @@ public class StudentModel implements Serializable {
         student.getSubjects().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subject ->
                 studentModel.getSubjects().add(SubjectModel.create(subject)), Exception.class));
 
-        studentModel.validate();
+        //studentModel.validate();
 
         return studentModel;
     }

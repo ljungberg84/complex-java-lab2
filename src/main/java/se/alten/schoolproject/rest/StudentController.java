@@ -92,10 +92,10 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response updateStudent( String requestBody, @Context UriInfo uriInfo) throws Exception {
 
-        StudentModel studentModel = StudentModel.create(requestBody);
-        StudentModel updatedStudentModel = schoolAccessLocal.updateStudent(studentModel);
+        Student student = Student.create(requestBody);
+        Student updatedStudent = schoolAccessLocal.updateStudent(student);
 
-        URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudentModel.getEmail()).build();
+        URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudent.getEmail()).build();
 
         return Response.status(Response.Status.OK).entity(createdURI).build();
     }

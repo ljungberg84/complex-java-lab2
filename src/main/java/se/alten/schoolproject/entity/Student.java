@@ -8,10 +8,16 @@ import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.persistence.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,15 +33,15 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message = "firstName must not be empty")
+    @NotEmpty(message = "firstName must not be null")
     @Column(name = "firstName")
     private String firstName;
 
-    @NotEmpty(message = "lastName must not be empty")
+    @NotEmpty(message = "lastName must not be null")
     @Column(name = "lastName")
     private String lastName;
 
-    @NotEmpty(message = "email must not be empty")
+    @NotEmpty(message = "email must not be null")
     @Email(message = "email must be valid format")
     @Column(name = "email", unique = true)
     private String email;
@@ -49,21 +55,18 @@ public class Student implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"))
     private Set<Subject> subjects = new HashSet<>();
 
+
     public static Student create(String student) throws Exception{
 
         try{
-            System.out.println("0------------------------------------------------------------------");
             Student newStudent = mapper.readValue(student, Student.class);
-            System.out.println("1------------------------------------------------------------------");
-
-            System.out.println(newStudent);
-            System.out.println("-------------------------------------------------------------------");
+            validate(newStudent);
 
             return newStudent;
 
         }catch(Exception e){
 
-            throw new ResourceCreationException("Could not create Student entity");
+            throw new ResourceCreationException("Invalid request-body");
         }
     }
 
@@ -79,5 +82,18 @@ public class Student implements Serializable {
                 student.getSubjects().add(Subject.create(subjectModel)), Exception.class));
 
         return student;
+    }
+
+    private static void validate(Student student) throws Exception {
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+
+        if(!violations.isEmpty()){
+
+            throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
+        }
     }
 }

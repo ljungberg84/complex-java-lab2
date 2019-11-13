@@ -74,9 +74,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public Student addStudent(Student student) throws Exception{
 
-        Student persistedEntity = studentTransactionAccess.addStudent(student);
+        //Student persistedEntity = studentTransactionAccess.addStudent(student);
 
-        return student;
+        return studentTransactionAccess.addStudent(student);
     }
 
     @Override
@@ -86,11 +86,11 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public StudentModel updateStudent(StudentModel studentModel) throws Exception{
+    public Student updateStudent(Student student) throws Exception{
 
-        Student updatedStudent = studentTransactionAccess.updateStudent(Student.create(studentModel));
+        //Student updatedStudent = studentTransactionAccess.updateStudent(student);
 
-        return StudentModel.create(updatedStudent);
+        return studentTransactionAccess.updateStudent(student);
     }
 
     @Override

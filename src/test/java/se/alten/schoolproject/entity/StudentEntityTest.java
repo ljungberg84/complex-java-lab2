@@ -16,19 +16,20 @@ import se.alten.schoolproject.model.SubjectModel;
 
 import javax.validation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(Arquillian.class)
-public class studentModelTest {
+public class StudentEntityTest {
 
     private Validator validator;
 
     @Deployment
     public static JavaArchive createDeployment() {
-        
+
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Student.class)
                 .addClass(StudentModel.class)
@@ -40,7 +41,6 @@ public class studentModelTest {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-
     @Before
     public void setUp(){
 
@@ -49,57 +49,24 @@ public class studentModelTest {
     }
 
 
-    //----------------Parse StudentModel to and from Student entity------------//
+    //----------------Parse Student entity ------------------------------------//
     //-------------------------------------------------------------------------//
 
 
     @Test
-    public void parseStudentModelToStudentEntityTest(){
+    public void createFromString(){
 
-        Set<SubjectModel> subjectModels = new HashSet<>();
-        SubjectModel sub1 = new SubjectModel();
-        SubjectModel sub2 = new SubjectModel();
-        SubjectModel sub3 = new SubjectModel();
-
-        sub1.setTitle("math");
-        sub2.setTitle("geography");
-        sub3.setTitle("test");
-
-        subjectModels.add(sub1);
-        subjectModels.add(sub2);
-
-        StudentModel studentModel = new StudentModel();
-        studentModel.setFirstName("test");
-        studentModel.setLastName("test");
-        studentModel.setEmail("test@email.com");
-        studentModel.setSubjects(subjectModels);
-
-        Student student = Student.create(studentModel);
-        assertEquals(2, student.getSubjects().size());
-    }
-
-
-    @Test
-    public void parseStudentModelFromStudentEntityTest(){
-
-        Set<Subject> subjects = new HashSet<>();
-        Subject sub1 = new Subject();
-        Subject sub2 = new Subject();
-        sub1.setTitle("math");
-        sub2.setTitle("geography");
-
-        subjects.add(sub1);
-        subjects.add(sub2);
-
-        Student student = new Student();
-        student.setFirstName("test");
-        student.setLastName("test");
-        student.setEmail("test@email.com");
-        student.setSubjects(subjects);
+        String studentRequest = "{" +
+                "\t\"firstName\":\"test1\",\n" +
+                "\t\"lastName\":\"test2\",\n" +
+                "\t\"email\":\"3@gmail.com\"}";
 
         try{
-            StudentModel studentModel = StudentModel.create(student);
-            assertEquals(2, studentModel.getSubjects().size());
+            Student student = Student.create(studentRequest);
+
+            assertEquals("3@gmail.com",student.getEmail());
+            assertEquals("test1", student.getFirstName());
+            assertEquals("test2", student.getLastName());
 
         }catch(Exception e){
             fail();
@@ -107,26 +74,39 @@ public class studentModelTest {
     }
 
 
-    //----------------StudentModel bean validation tests-----------------------//
-    //-------------------------------------------------------------------------//
-
-
     @Test
-    public void createValidStudentTest() {
+    public void createFromStudentModel(){
 
         String firstName = "test";
-        String lastName = "test2";
-        String email = "test@gmail.com";
+        String lastName = "test";
+        String email = "test@mail.com";
 
-        StudentModel student = new StudentModel();
+        StudentModel studentModel = new StudentModel();
+        studentModel.setFirstName(firstName);
+        studentModel.setLastName(lastName);
+        studentModel.setEmail(email);
 
-        student.setFirstName(firstName);
-        student.setLastName(lastName);
-        student.setEmail(email);
+        Student student = Student.create(studentModel);
 
-        assert(student.getFirstName().equals(firstName));
-        assert(student.getLastName().equals(lastName));
-        assert (student.getEmail().equals(email));
+        assertEquals(firstName, student.getFirstName());
+        assertEquals(lastName, student.getLastName());
+        assertEquals(email, student.getEmail());
+
+    }
+
+
+    //------------------bean validation-----------------------------------------//
+    //--------------------------------------------------------------------------//
+
+    @Test(expected = ResourceCreationException.class)
+    public void createInvalidThrowsExceptionTest() throws Exception{
+
+        String studentRequest = "{" +
+                "\t\"firstName\":" + null + "," +
+                "\t\"lastName\":\"test2\",\n" +
+                "\t\"email\":\"3@gmail.com\"}";
+
+        Student.create(studentRequest);
     }
 
 
@@ -151,13 +131,13 @@ public class studentModelTest {
     @Test
     public void createWithNullEmailTest(){
 
-        StudentModel student = new StudentModel();
+        Student student = new Student();
         student.setFirstName("test");
         student.setLastName("test");
         student.setEmail(null);
-        List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
+        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+        ConstraintViolation<Student> violation = violations.get(0);
 
-        ConstraintViolation<StudentModel> violation = violations.get(0);
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();
 
@@ -169,12 +149,14 @@ public class studentModelTest {
     @Test
     public void createWithNullNameTest(){
 
-        StudentModel student = new StudentModel();
+        Student student = new Student();
+
         student.setFirstName(null);
         student.setLastName("test");
         student.setEmail("test@test.com");
-        List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
-        ConstraintViolation<StudentModel> violation = violations.get(0);
+
+        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+        ConstraintViolation<Student> violation = violations.get(0);
 
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();
@@ -187,12 +169,12 @@ public class studentModelTest {
     @Test
     public void createWithNullLastNameTest(){
 
-        StudentModel student = new StudentModel();
+        Student student = new Student();
         student.setFirstName("test");
         student.setLastName(null);
         student.setEmail("test@test.com");
-        List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
-        ConstraintViolation<StudentModel> violation = violations.get(0);
+        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+        ConstraintViolation<Student> violation = violations.get(0);
 
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();

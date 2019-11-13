@@ -19,7 +19,7 @@ public interface SchoolAccessLocal {
 
     void removeStudent(String email) throws Exception;
 
-    StudentModel updateStudent(StudentModel student) throws Exception;
+    Student updateStudent(Student student) throws Exception;
 
 
     //void updateStudentPartial(String studentModel);

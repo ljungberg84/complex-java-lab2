@@ -65,12 +65,12 @@ public class StudentController {
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response addStudent(String requestBody, @Context UriInfo uriInfo) throws Exception {
+    public Response addStudent(String studentBody, @Context UriInfo uriInfo) throws Exception {
 
-        StudentModel studentModel = StudentModel.create(requestBody);
-        StudentModel addedStudentModel = schoolAccessLocal.addStudent(studentModel);
+        Student student = Student.create(studentBody);
+        Student addedStudent = schoolAccessLocal.addStudent(student);
 
-        URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudentModel.getEmail()).build();
+        URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudent.getEmail()).build();
 
         return Response.status(Response.Status.CREATED).entity(createdURI).build();
     }

@@ -3,6 +3,7 @@ package se.alten.schoolproject.dao;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
@@ -64,5 +65,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
         Student updatedStudent = studentTransactionAccess.updateStudent(Student.create(student));
 
         return StudentModel.create(updatedStudent);
+    }
+
+    @Override
+    public List listAllSubjects() {
+        return null;
+    }
+
+    @Override
+    public SubjectModel addSubject(String subjectModel) {
+        return null;
     }
 }

@@ -14,6 +14,7 @@ import se.alten.schoolproject.dao.SchoolAccessRemote;
 import se.alten.schoolproject.dao.SchoolDataAccess;
 import se.alten.schoolproject.errorhandling.*;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 import se.alten.schoolproject.rest.StudentController;
 import se.alten.schoolproject.transaction.StudentTransaction;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
@@ -45,6 +46,8 @@ public class StudentControllerTest {
                 .addClass(StudentController.class)
                 .addClass(StudentTransaction.class)
                 .addClass(StudentTransactionAccess.class)
+                .addClass(Subject.class)
+                .addClass(SubjectModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml");
 

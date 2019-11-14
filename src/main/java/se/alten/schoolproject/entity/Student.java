@@ -1,8 +1,6 @@
 package se.alten.schoolproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
-import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
@@ -73,18 +71,8 @@ public class Student extends MyEntity implements Serializable {
         this.setFirstName(studentModel.getFirstName());
         this.setLastName(studentModel.getLastName());
         this.setEmail(studentModel.getEmail());
-        this.setSubjects(parseSubjects(studentModel.getSubjects()));
+        this.setSubjects(super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class));
 
         validate(this);
-    }
-
-
-    private Set<Subject> parseSubjects(Set<SubjectModel> subjectModels){
-
-        Set<Subject> subjects = new HashSet<>();
-        subjectModels.forEach(LambdaExceptionWrapper.handlingConsumerWrapper( subjectModel ->
-                subjects.add(new Subject(subjectModel)), Exception.class));
-
-        return subjects;
     }
 }

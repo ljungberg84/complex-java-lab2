@@ -2,16 +2,18 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.*;
+import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
+import se.alten.schoolproject.model.MyModel;
 
-import javax.persistence.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 
@@ -22,6 +24,7 @@ public abstract class MyEntity {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 
+    //TODO: add logger name for subclasses
     static final Logger logger = Logger.getLogger("MyEntity");
 
 
@@ -37,6 +40,16 @@ public abstract class MyEntity {
             logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid request-body: " + e.getMessage() );
         }
+    }
+
+
+    <M extends MyModel, E extends MyEntity> Set<E> parseModelsToEntities( Set<M> models, Class<M>  from, Class<E> target ) throws Exception{
+
+        Set<E> entities = new HashSet<>();
+        models.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(model ->
+                entities.add(target.getDeclaredConstructor(from).newInstance(model)), Exception.class));
+
+        return entities;
     }
 
 

@@ -3,7 +3,6 @@ package se.alten.schoolproject.entity;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
-import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
@@ -55,18 +54,8 @@ public class Subject extends MyEntity implements Serializable {
     public Subject(SubjectModel subjectModel) throws Exception {
 
         this.setTitle(subjectModel.getTitle());
-        this.setStudents(parseStudents(subjectModel.getStudents()));
+        this.setStudents(super.parseModelsToEntities(subjectModel.getStudents(), StudentModel.class, Student.class));
 
         validate(this);
-    }
-
-
-    private Set<Student> parseStudents(Set<StudentModel> studentModels){
-
-        Set<Student> students = new HashSet<>();
-        studentModels.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(studentModel ->
-                students.add(new Student(studentModel)), Exception.class));
-
-        return students;
     }
 }

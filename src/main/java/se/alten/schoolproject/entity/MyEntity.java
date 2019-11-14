@@ -43,11 +43,11 @@ public abstract class MyEntity {
     }
 
 
-    <M extends MyModel, E extends MyEntity> Set<E> parseModelsToEntities( Set<M> models, Class<M>  from, Class<E> target ) throws Exception{
+    <M extends MyModel, E extends MyEntity> Set<E> parseModelsToEntities( Set<M> models, Class<M> constructorType, Class<E> targetClass ) throws Exception{
 
         Set<E> entities = new HashSet<>();
         models.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(model ->
-                entities.add(target.getDeclaredConstructor(from).newInstance(model)), Exception.class));
+                entities.add(targetClass.getDeclaredConstructor(constructorType).newInstance(model)), Exception.class));
 
         return entities;
     }

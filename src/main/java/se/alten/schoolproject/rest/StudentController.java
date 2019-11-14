@@ -67,7 +67,7 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response addStudent(String studentBody, @Context UriInfo uriInfo) throws Exception {
 
-        Student student = Student.create(studentBody);
+        Student student = new Student(studentBody);
         Student addedStudent = schoolAccessLocal.addStudent(student);
 
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudent.getEmail()).build();
@@ -92,7 +92,7 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response updateStudent( String requestBody, @Context UriInfo uriInfo) throws Exception {
 
-        Student student = Student.create(requestBody);
+        Student student = new Student(requestBody);
         Student updatedStudent = schoolAccessLocal.updateStudent(student);
 
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudent.getEmail()).build();

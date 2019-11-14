@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ThrowingConsumer;
+import se.alten.schoolproject.model.MyModel;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 
@@ -38,6 +39,8 @@ public class StudentEntityTest {
                 .addClass(SubjectModel.class)
                 .addClass(ThrowingConsumer.class)
                 .addClass(LambdaExceptionWrapper.class)
+                .addClass(MyEntity.class)
+                .addClass(MyModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -56,19 +59,20 @@ public class StudentEntityTest {
     @Test
     public void createFromString(){
 
-        String studentRequest = "{" +
+        String studentRequest = "{"+
                 "\t\"firstName\":\"test1\",\n" +
                 "\t\"lastName\":\"test2\",\n" +
                 "\t\"email\":\"3@gmail.com\"}";
 
         try{
-            Student student = Student.create(studentRequest);
+            Student student = new Student(studentRequest);
 
             assertEquals("3@gmail.com",student.getEmail());
             assertEquals("test1", student.getFirstName());
             assertEquals("test2", student.getLastName());
 
         }catch(Exception e){
+            System.out.println(e.getMessage());
             fail();
         }
     }
@@ -85,12 +89,16 @@ public class StudentEntityTest {
         studentModel.setFirstName(firstName);
         studentModel.setLastName(lastName);
         studentModel.setEmail(email);
+        try{
+            Student student = (Student) new Student(studentModel);
 
-        Student student = Student.create(studentModel);
+            assertEquals(firstName, student.getFirstName());
+            assertEquals(lastName, student.getLastName());
+            assertEquals(email, student.getEmail());
+        }catch(Exception e){
+            fail();
+        }
 
-        assertEquals(firstName, student.getFirstName());
-        assertEquals(lastName, student.getLastName());
-        assertEquals(email, student.getEmail());
 
     }
 
@@ -106,7 +114,7 @@ public class StudentEntityTest {
                 "\t\"lastName\":\"test2\",\n" +
                 "\t\"email\":\"3@gmail.com\"}";
 
-        Student.create(studentRequest);
+        new Student(studentRequest);
     }
 
 
@@ -117,6 +125,7 @@ public class StudentEntityTest {
         student.setFirstName("test");
         student.setLastName("test");
         student.setEmail("test.com");
+
         List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
         ConstraintViolation<StudentModel> violation = violations.get(0);
 

@@ -3,22 +3,10 @@ package se.alten.schoolproject.model;
 import lombok.*;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
-import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.persistence.*;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SubjectModel implements Serializable {
+public class SubjectModel extends MyModel implements Serializable {
 
     private Long id;
 
@@ -58,28 +46,13 @@ public class SubjectModel implements Serializable {
     public static SubjectModel create(Subject subject ) throws Exception {
 
         SubjectModel subjectModel = new SubjectModel();
-
         subjectModel.setTitle(subject.getTitle());
 
         subject.getStudents().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(student ->
                 subjectModel.getStudents().add(StudentModel.create(student)), Exception.class));
 
-        subjectModel.validate();
+        validate(subjectModel);
 
         return subjectModel;
-    }
-
-
-    private void validate() throws Exception {
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        List<ConstraintViolation<SubjectModel>> violations = new ArrayList<>(validator.validate(this));
-
-        if(!violations.isEmpty()){
-
-            throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
-        }
     }
 }

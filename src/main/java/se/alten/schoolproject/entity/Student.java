@@ -1,23 +1,18 @@
 package se.alten.schoolproject.entity;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 
 import javax.persistence.*;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,27 +22,29 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class Student implements Serializable {
+public class Student extends MyEntity implements Serializable {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
 
     @NotEmpty(message = "firstName must not be null")
     @Column(name = "firstName")
     private String firstName;
 
+
     @NotEmpty(message = "lastName must not be null")
     @Column(name = "lastName")
     private String lastName;
+
 
     @NotEmpty(message = "email must not be null")
     @Email(message = "email must be valid format")
     @Column(name = "email", unique = true)
     private String email;
 
-    private static ObjectMapper mapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "student_subject",
@@ -56,44 +53,38 @@ public class Student implements Serializable {
     private Set<Subject> subjects = new HashSet<>();
 
 
-    public static Student create(String student) throws Exception{
+    public Student(String jsonBody) throws Exception{
 
         try{
-            Student newStudent = mapper.readValue(student, Student.class);
-            validate(newStudent);
-
-            return newStudent;
+            Student student = super.create(jsonBody, Student.class);
+            this.setFirstName(student.getFirstName());
+            this.setLastName(student.getLastName());
+            this.setEmail(student.getEmail());
 
         }catch(Exception e){
 
-            throw new ResourceCreationException("Invalid request-body");
+            throw new ResourceCreationException("Invalid requestBody");
         }
     }
 
-    public static Student create(StudentModel studentModel) {
 
-        Student student = new Student();
+    public Student(StudentModel studentModel) throws Exception {
 
-        student.setFirstName(studentModel.getFirstName());
-        student.setLastName(studentModel.getLastName());
-        student.setEmail(studentModel.getEmail());
+        this.setFirstName(studentModel.getFirstName());
+        this.setLastName(studentModel.getLastName());
+        this.setEmail(studentModel.getEmail());
+        this.setSubjects(parseSubjects(studentModel.getSubjects()));
 
-        studentModel.getSubjects().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subjectModel ->
-                student.getSubjects().add(Subject.create(subjectModel)), Exception.class));
-
-        return student;
+        validate(this);
     }
 
-    private static void validate(Student student) throws Exception {
 
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
+    private Set<Subject> parseSubjects(Set<SubjectModel> subjectModels){
 
-        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+        Set<Subject> subjects = new HashSet<>();
+        subjectModels.forEach(LambdaExceptionWrapper.handlingConsumerWrapper( subjectModel ->
+                subjects.add(new Subject(subjectModel)), Exception.class));
 
-        if(!violations.isEmpty()){
-
-            throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
-        }
+        return subjects;
     }
 }

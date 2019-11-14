@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ThrowingConsumer;
+import se.alten.schoolproject.model.MyModel;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 
@@ -37,6 +38,8 @@ public class studentModelTest {
                 .addClass(SubjectModel.class)
                 .addClass(ThrowingConsumer.class)
                 .addClass(LambdaExceptionWrapper.class)
+                .addClass(MyEntity.class)
+                .addClass(MyModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -59,23 +62,28 @@ public class studentModelTest {
         Set<SubjectModel> subjectModels = new HashSet<>();
         SubjectModel sub1 = new SubjectModel();
         SubjectModel sub2 = new SubjectModel();
-        SubjectModel sub3 = new SubjectModel();
 
         sub1.setTitle("math");
         sub2.setTitle("geography");
-        sub3.setTitle("test");
 
         subjectModels.add(sub1);
         subjectModels.add(sub2);
 
         StudentModel studentModel = new StudentModel();
+
         studentModel.setFirstName("test");
         studentModel.setLastName("test");
         studentModel.setEmail("test@email.com");
         studentModel.setSubjects(subjectModels);
 
-        Student student = Student.create(studentModel);
-        assertEquals(2, student.getSubjects().size());
+        try{
+            Student student = new Student(studentModel);
+
+            assertEquals(2, student.getSubjects().size());
+        }catch(Exception e){
+
+            fail();
+        }
     }
 
 
@@ -97,11 +105,14 @@ public class studentModelTest {
         student.setEmail("test@email.com");
         student.setSubjects(subjects);
 
+        StudentModel studentModel = null;
+
         try{
-            StudentModel studentModel = StudentModel.create(student);
+            studentModel = StudentModel.create(student);
             assertEquals(2, studentModel.getSubjects().size());
 
         }catch(Exception e){
+
             fail();
         }
     }

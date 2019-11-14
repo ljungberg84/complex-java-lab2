@@ -34,8 +34,17 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             throw new ResourceCreationException(String.format("Record with id: %s already exist", subject.getId()));
         }
 
+        logger.info("---------------------------------");
+        logger.info("subject before database: " + subject);
+        logger.info("---------------------------------");
+
         Subject addedSubject = entityManager.merge(subject);
         entityManager.flush();
+
+        logger.info("---------------------------------");
+        logger.info("subject after database: " + subject);
+        logger.info("---------------------------------");
+
         return addedSubject;
     }
 

@@ -1,6 +1,8 @@
 package se.alten.schoolproject.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.jboss.logging.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
@@ -13,19 +15,19 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity//(name = "student")
 @Table(name="student")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Student extends MyEntity implements Serializable {
+public class Student extends EntityUtil implements Serializable {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
 
     @NotEmpty(message = "firstName must not be null")
@@ -44,23 +46,31 @@ public class Student extends MyEntity implements Serializable {
     private String email;
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Subject.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "student_subject",
             joinColumns=@JoinColumn(name="student_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"))
-    private Set<Subject> subjects = new HashSet<>();
+    private Set<Subject> subjects = new HashSet<Subject>();
+
+
+    @JsonIgnore
+    private org.jboss.logging.Logger logger = Logger.getLogger(getClass());
 
 
     public Student(String jsonBody) throws Exception{
 
         try{
             Student student = super.create(jsonBody, Student.class);
-            this.setFirstName(student.getFirstName());
-            this.setLastName(student.getLastName());
-            this.setEmail(student.getEmail());
+            this.firstName = student.getFirstName();
+            this.lastName= student.getLastName();
+            this.email = student.getEmail();
+            if(student.getSubjects() != null && !student.getSubjects().isEmpty()){
+
+                this.subjects = student.getSubjects();
+            }
 
         }catch(Exception e){
-
+            logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid requestBody");
         }
     }
@@ -68,10 +78,10 @@ public class Student extends MyEntity implements Serializable {
 
     public Student(StudentModel studentModel) throws Exception {
 
-        this.setFirstName(studentModel.getFirstName());
-        this.setLastName(studentModel.getLastName());
-        this.setEmail(studentModel.getEmail());
-        this.setSubjects(super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class));
+        this.firstName = studentModel.getFirstName();
+        this.lastName = studentModel.getLastName();
+        this.email = studentModel.getEmail();
+        this.subjects = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
 
         validate(this);
     }

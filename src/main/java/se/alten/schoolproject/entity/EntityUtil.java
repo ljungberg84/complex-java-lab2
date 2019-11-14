@@ -2,10 +2,14 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.Getter;
+import org.jboss.logging.Logger;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
-import se.alten.schoolproject.model.MyModel;
+import se.alten.schoolproject.model.BaseModel;
 
+import javax.persistence.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -14,21 +18,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
+
+@MappedSuperclass
+public abstract class EntityUtil {
 
 
-public abstract class MyEntity {
+    @Id
+    @Getter
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 
     private static ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 
-    //TODO: add logger name for subclasses
-    static final Logger logger = Logger.getLogger("MyEntity");
+    private  Logger logger = Logger.getLogger(getClass());
 
 
-    protected <T extends MyEntity> T create(String object, Class<T> targetClass) throws Exception{
+    protected <T extends EntityUtil> T create(String object, Class<T> targetClass) throws Exception{
 
         try{
             T entity = mapper.readValue(object, targetClass);
@@ -43,7 +52,8 @@ public abstract class MyEntity {
     }
 
 
-    <M extends MyModel, E extends MyEntity> Set<E> parseModelsToEntities( Set<M> models, Class<M> constructorType, Class<E> targetClass ) throws Exception{
+    <M extends BaseModel, E extends EntityUtil> Set<E> parseModelsToEntities(
+            Set<M> models, Class<M> constructorType, Class<E> targetClass ) throws Exception{
 
         Set<E> entities = new HashSet<>();
         models.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(model ->
@@ -53,12 +63,12 @@ public abstract class MyEntity {
     }
 
 
-    static void validate(MyEntity entity) throws Exception {
+    static void validate(EntityUtil entity) throws Exception {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        List<ConstraintViolation<MyEntity>> violations = new ArrayList<>(validator.validate(entity));
+        List<ConstraintViolation<EntityUtil>> violations = new ArrayList<>(validator.validate(entity));
 
         if(!violations.isEmpty()){
 

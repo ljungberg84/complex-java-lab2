@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ThrowingConsumer;
-import se.alten.schoolproject.model.MyModel;
+import se.alten.schoolproject.model.BaseModel;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
 
@@ -39,8 +39,8 @@ public class StudentEntityTest {
                 .addClass(SubjectModel.class)
                 .addClass(ThrowingConsumer.class)
                 .addClass(LambdaExceptionWrapper.class)
-                .addClass(MyEntity.class)
-                .addClass(MyModel.class)
+                .addClass(EntityUtil.class)
+                .addClass(BaseModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -121,13 +121,13 @@ public class StudentEntityTest {
     @Test
     public void createWithInvalidEmailTest(){
 
-        StudentModel student = new StudentModel();
+        Student student = new Student();
         student.setFirstName("test");
         student.setLastName("test");
         student.setEmail("test.com");
 
-        List<ConstraintViolation<StudentModel>> violations = new ArrayList<>(validator.validate(student));
-        ConstraintViolation<StudentModel> violation = violations.get(0);
+        List<ConstraintViolation<Student>> violations = new ArrayList<>(validator.validate(student));
+        ConstraintViolation<Student> violation = violations.get(0);
 
         String validatorMessage = violation.getMessageTemplate();
         Path propertyPath = violation.getPropertyPath();

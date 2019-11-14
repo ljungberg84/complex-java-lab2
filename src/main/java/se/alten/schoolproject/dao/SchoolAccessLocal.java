@@ -16,7 +16,7 @@ public interface SchoolAccessLocal {
     //originally studentModel return type
     Student addStudent(Student student) throws Exception;
 
-    StudentModel getStudent(String email) throws Exception;
+    Student getStudent(String email) throws Exception;
 
     void removeStudent(String email) throws Exception;
 
@@ -27,5 +27,5 @@ public interface SchoolAccessLocal {
 
     List listAllSubjects();
 
-    SubjectModel addSubject(Subject subject) throws Exception;
+    Subject addSubject(Subject subject) throws Exception;
 }

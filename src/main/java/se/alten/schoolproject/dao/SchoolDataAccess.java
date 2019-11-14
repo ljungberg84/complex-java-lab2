@@ -51,11 +51,11 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
 
     @Override
-    public StudentModel getStudent(String email) throws Exception{
+    public Student getStudent(String email) throws Exception{
 
-        Student student = studentTransactionAccess.getStudent(email);
+        //studentTransactionAccess.getStudent(email);
 
-        return StudentModel.create(student);
+        return studentTransactionAccess.getStudent(email);
 
     }
 
@@ -102,10 +102,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
 
     @Override
-    public SubjectModel addSubject(Subject subject)  throws Exception{
+    public Subject addSubject(Subject subject)  throws Exception{
 
-        Subject addedSubject = subjectTransactionAccess.addSubject(subject);
+        //Subject addedSubject = subjectTransactionAccess.addSubject(subject);
 
-        return SubjectModel.create(addedSubject);
+        return subjectTransactionAccess.addSubject(subject);
     }
 }

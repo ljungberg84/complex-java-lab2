@@ -3,6 +3,7 @@ package se.alten.schoolproject.rest;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -45,8 +46,11 @@ public class StudentController {
     @GET
     @Produces(APPLICATION_JSON)
     public Response listStudents() throws Exception {
+        logger.info("get 1");
 
         List<Student> students = schoolAccessLocal.listAllStudents();
+        logger.info("get 2");
+
         return Response.ok(students).build();
     }
 
@@ -56,7 +60,7 @@ public class StudentController {
     @Path("/{email}")
     public Response getStudent(@PathParam("email") String email) throws Exception{
 
-        StudentModel student = schoolAccessLocal.getStudent(email);
+        Student student = schoolAccessLocal.getStudent(email);
 
         return Response.status(Response.Status.OK).entity(student).build();
     }
@@ -98,5 +102,29 @@ public class StudentController {
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudent.getEmail()).build();
 
         return Response.status(Response.Status.OK).entity(createdURI).build();
+    }
+
+
+    @PATCH
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
+    @Path("/{email}/subject")
+    public Response addSubjectToStudent(@PathParam("email") String email, String requestSubject) throws Exception{
+
+        Student student = schoolAccessLocal.getStudent(email);
+        Subject subject = new Subject(requestSubject);
+        schoolAccessLocal.addSubject(subject);
+        logger.info("1-----------------------------------------------");
+        logger.info("subject: " + subject);
+        logger.info("1-----------------------------------------------");
+        logger.info("2");
+        student.getSubjects().add(subject);
+        logger.info("3");
+
+        Student addedStudent = schoolAccessLocal.updateStudent(student);
+        logger.info("4");
+
+
+        return Response.status(Response.Status.OK).entity(addedStudent).build();
     }
 }

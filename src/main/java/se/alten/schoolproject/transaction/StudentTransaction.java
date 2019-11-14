@@ -89,12 +89,22 @@ public class StudentTransaction implements StudentTransactionAccess{
     public Student updateStudent(Student student) throws Exception{
 
         try{
+            //Student studentToUpdate = getStudent(student.getEmail());
+            //Student studentToUpdate = new Student();
+            //studentToUpdate.setFirstName(student.getFirstName());
+            //studentToUpdate.setLastName(student.getLastName());
+            //studentToUpdate.setSubjects(student.getSubjects());
 
-            Student studentToUpdate = getStudent(student.getEmail());
-            studentToUpdate.setFirstName(student.getFirstName());
-            studentToUpdate.setLastName(student.getLastName());
+            //Student updatedStudent = entityManager.merge(studentToUpdate);
 
-            Student updatedStudent = entityManager.merge(studentToUpdate);
+            logger.info("---------------------------------");
+            logger.info("student before database: " + student);
+            logger.info("---------------------------------");
+
+            Student updatedStudent = entityManager.merge(student);
+            logger.info("---------------------------------");
+            logger.info("student after database: " + student);
+            logger.info("---------------------------------");
             entityManager.flush();
 
             return updatedStudent;

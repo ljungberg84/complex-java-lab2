@@ -2,8 +2,7 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
-import se.alten.schoolproject.model.StudentModel;
-import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.entity.Teacher;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -13,7 +12,6 @@ public interface SchoolAccessLocal {
 
     List listAllStudents() throws Exception;
 
-    //originally studentModel return type
     Student addStudent(Student student) throws Exception;
 
     Student getStudent(String email) throws Exception;
@@ -29,7 +27,10 @@ public interface SchoolAccessLocal {
 
     Subject addSubject(Subject subject) throws Exception;
 
-    Subject getSubjectByName(String subjectTitle);
+    Subject getSubjectByTitle(String title) throws Exception;
 
-    Subject getSubjectByTitle(String title) throws Exception    ;
-}
+    public Teacher addTeacher(Teacher teacher) throws Exception;
+
+    public Teacher getTeacherByEmail(String email) throws Exception;
+
+    }

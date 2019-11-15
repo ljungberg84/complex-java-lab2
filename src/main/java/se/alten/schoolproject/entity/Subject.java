@@ -1,8 +1,6 @@
 package se.alten.schoolproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.*;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;

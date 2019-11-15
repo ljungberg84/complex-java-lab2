@@ -50,11 +50,6 @@ public class SubjectTransaction implements SubjectTransactionAccess{
         return addedSubject;
     }
 
-    @Override
-    public List<Subject> getSubjectByName(List<String> subject) {
-        return null;
-    }
-
 
     @Override
     public Subject getSubjectByTitle(String title) throws Exception{
@@ -63,10 +58,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.title = :title");
             query.setParameter("title", title);
 
-            Subject subject = (Subject) query.getSingleResult();
-            entityManager.flush();
-
-            return subject;
+            return (Subject) query.getSingleResult();
 
         }catch (Exception e){
             entityManager.flush();

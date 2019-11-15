@@ -1,7 +1,9 @@
 package se.alten.schoolproject.transaction;
 
+import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
+import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,5 +53,24 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @Override
     public List<Subject> getSubjectByName(List<String> subject) {
         return null;
+    }
+
+
+    @Override
+    public Subject getSubjectByTitle(String title) throws Exception{
+
+        try{
+            Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.title = :title");
+            query.setParameter("title", title);
+
+            Subject subject = (Subject) query.getSingleResult();
+            entityManager.flush();
+
+            return subject;
+
+        }catch (Exception e){
+            entityManager.flush();
+            throw new ResourceNotFoundException(String.format("Subject not found: %s, error: %s", title, e.getMessage()));
+        }
     }
 }

@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -13,7 +14,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -62,7 +65,11 @@ public class StudentController {
 
         Student student = schoolAccessLocal.getStudent(email);
 
+        //StudentModel studentModel = new StudentModel(student);
+
         return Response.status(Response.Status.OK).entity(student).build();
+        //return Response.status(Response.Status.OK).entity(studentModel).build();
+
     }
 
 
@@ -72,8 +79,12 @@ public class StudentController {
     public Response addStudent(String studentBody, @Context UriInfo uriInfo) throws Exception {
 
         Student student = new Student(studentBody);
+        if(student.getSubjects() != null && !student.getSubjects().isEmpty()){
+            for (String subject: student.getSubjects()) {
+                student.getSubjectObjs().add(schoolAccessLocal.getSubjectByTitle(subject));
+            }
+        }
         Student addedStudent = schoolAccessLocal.addStudent(student);
-
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudent.getEmail()).build();
 
         return Response.status(Response.Status.CREATED).entity(createdURI).build();
@@ -118,13 +129,16 @@ public class StudentController {
         logger.info("subject: " + subject);
         logger.info("1-----------------------------------------------");
         logger.info("2");
-        student.getSubjects().add(subject);
+        student.getSubjectObjs().add(subject);
         logger.info("3");
 
         Student addedStudent = schoolAccessLocal.updateStudent(student);
         logger.info("4");
 
-
         return Response.status(Response.Status.OK).entity(addedStudent).build();
     }
+
+    //TODO: maybe bring back  patch for easier adding of teachers and subjects. parse incomming body to student entity and have -
+    //TODO: update partial method that sets all fields that is not null on incomming obj to retrieved object
+    //TODO: or just make endpoint to add and remove subject for student
 }

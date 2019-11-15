@@ -108,4 +108,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         return subjectTransactionAccess.addSubject(subject);
     }
+
+    @Override
+    public Subject getSubjectByName(String subjectTitle) {
+        return null;
+    }
+
+    public Subject getSubjectByTitle(String title) throws Exception{
+
+        return subjectTransactionAccess.getSubjectByTitle(title);
+    }
 }

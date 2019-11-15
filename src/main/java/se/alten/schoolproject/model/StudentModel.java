@@ -42,11 +42,15 @@ public class StudentModel extends BaseModel implements Serializable {
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.email = student.getEmail();
-        this.subjects = super.parseEntitiesToModels(student.getSubjects(), Subject.class, SubjectModel.class);
+
+        System.out.println("...................................");
+        System.out.println(student);
+        student.getSubjectObjs().forEach(s -> System.out.println("sub in student to model: " + s));
+        System.out.println("...................................");
+
+        this.subjects = super.parseEntitiesToModels(student.getSubjectObjs(), Subject.class, SubjectModel.class);
 
         validate(this);
-
-
     }
 
 //    public static StudentModel create(Student student ) throws Exception {
@@ -57,8 +61,8 @@ public class StudentModel extends BaseModel implements Serializable {
 //        studentModel.setLastName(student.getLastName());
 //        studentModel.setEmail(student.getEmail());
 //
-////        student.getSubjects().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subject ->
-////                studentModel.getSubjects().add(SubjectModel.create(subject)), Exception.class));
+////        student.getSubjectObjs().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subject ->
+////                studentModel.getSubjectObjs().add(SubjectModel.create(subject)), Exception.class));
 //
 //        validate(studentModel);
 //

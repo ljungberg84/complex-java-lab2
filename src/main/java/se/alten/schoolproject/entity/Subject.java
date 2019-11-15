@@ -2,8 +2,8 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.*;
-import org.jboss.logging.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
@@ -12,8 +12,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Logger;
 
-@Entity//(name = "subject")
+@Entity
 @Table(name = "subject")
 @Getter
 @Setter
@@ -22,24 +23,34 @@ import java.util.*;
 @ToString
 public class Subject extends EntityUtil implements Serializable {
 
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotEmpty
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
+//    @ManyToMany(targetEntity = Student.class, mappedBy = "subjectObjs",
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+//    @JsonBackReference
+    @ManyToMany
+    @JoinTable(
+        name = "subject_student",
+        joinColumns = {@JoinColumn(name = "subject_id")},
+        inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    private Set<Student> students = new HashSet<>();
 
-    @ManyToMany(targetEntity = Student.class, mappedBy = "subjects", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JsonBackReference
-    private Set<Student> students = new HashSet<Student>();
-
+    @ManyToOne
+    @JoinTable(name = "subject_teacher",
+    joinColumns = {@JoinColumn(name = "subject_id")},
+    inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
+    private Teacher teacher;
 
     @JsonIgnore
-    private org.jboss.logging.Logger logger = Logger.getLogger(getClass());
+    @Transient
+    private Logger logger = Logger.getLogger("Subject");
 
 
     public Subject(String newSubject) throws Exception{
@@ -52,6 +63,7 @@ public class Subject extends EntityUtil implements Serializable {
                 this.students = subject.getStudents();
             }
         }catch(Exception e){
+
             logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid requestBody");
         }

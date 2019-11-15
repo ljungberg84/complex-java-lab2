@@ -9,5 +9,6 @@ public interface SubjectTransactionAccess {
 
     List listAllSubjects();
     Subject addSubject(Subject subject) throws ResourceCreationException;
+    Subject getSubjectByTitle(String title) throws Exception;
     List<Subject> getSubjectByName(List<String> subject);
 }

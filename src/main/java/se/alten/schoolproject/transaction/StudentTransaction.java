@@ -26,8 +26,11 @@ public class StudentTransaction implements StudentTransactionAccess{
 
 
     @Override
+    //@NamedEntityGraph()
+    //@EntityGraph(value = "Item.characteristics")
     public List<Student> listAllStudents() {
 
+//        Query query = entityManager.createQuery("SELECT s from Student s JOIN FETCH s.subjectObjs t");
         Query query = entityManager.createQuery("SELECT s from Student s");
 
         return query.getResultList();
@@ -53,18 +56,23 @@ public class StudentTransaction implements StudentTransactionAccess{
 
     @Override
     public Student addStudent(Student student) throws Exception{
+        try {
+            Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
+            query.setParameter("email", student.getEmail());
+            if (!query.getResultList().isEmpty()) {
 
-        Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
-        query.setParameter("email", student.getEmail());
-        if(!query.getResultList().isEmpty()){
+                throw new ResourceCreationException("Record containing email already exist");
+            }
 
-            throw new ResourceCreationException("Record containing email already exist");
+            Student addedStudent = entityManager.merge(student);
+            entityManager.flush();
+
+            return addedStudent;
+
+        }catch(RuntimeException e){
+
+            throw new ResourceCreationException(String.format("Could not add subject: %s", e.getMessage()));
         }
-
-        Student addedStudent = entityManager.merge(student);
-        entityManager.flush();
-
-        return addedStudent;
     }
 
 
@@ -93,7 +101,7 @@ public class StudentTransaction implements StudentTransactionAccess{
             //Student studentToUpdate = new Student();
             //studentToUpdate.setFirstName(student.getFirstName());
             //studentToUpdate.setLastName(student.getLastName());
-            //studentToUpdate.setSubjects(student.getSubjects());
+            //studentToUpdate.setSubjectObjs(student.getSubjectObjs());
 
             //Student updatedStudent = entityManager.merge(studentToUpdate);
 

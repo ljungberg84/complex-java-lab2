@@ -79,7 +79,7 @@ public class studentModelTest {
         try{
             Student student = new Student(studentModel);
 
-            assertEquals(2, student.getSubjects().size());
+            assertEquals(2, student.getSubjectObjs().size());
         }catch(Exception e){
 
             fail();
@@ -103,7 +103,7 @@ public class studentModelTest {
         student.setFirstName("test");
         student.setLastName("test");
         student.setEmail("test@email.com");
-        student.setSubjects(subjects);
+        student.setSubjectObjs(subjects);
 
         StudentModel studentModel = null;
 

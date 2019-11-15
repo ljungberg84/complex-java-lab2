@@ -3,7 +3,6 @@ package se.alten.schoolproject.rest;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Subject;
-import se.alten.schoolproject.model.SubjectModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -33,7 +32,6 @@ public class SubjectController {
         List<Subject> subjects = schoolAccessLocal.listAllSubjects();
 
         return Response.status(Response.Status.OK).entity(subjects).build();
-
     }
 
     @POST

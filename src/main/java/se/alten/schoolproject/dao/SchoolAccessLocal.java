@@ -28,4 +28,8 @@ public interface SchoolAccessLocal {
     List listAllSubjects();
 
     Subject addSubject(Subject subject) throws Exception;
+
+    Subject getSubjectByName(String subjectTitle);
+
+    Subject getSubjectByTitle(String title) throws Exception    ;
 }

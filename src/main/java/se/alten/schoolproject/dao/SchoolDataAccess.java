@@ -33,27 +33,18 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     @Override
     public List<StudentModel> listAllStudents() throws Exception{
-        logger.info("1-----------------------------");
-        List<Student> students = studentTransactionAccess.listAllStudents();
-        logger.info("2-----------------------------");
 
+        List<Student> students = studentTransactionAccess.listAllStudents();
 
         List<StudentModel> studentModels = new ArrayList<>();
-        logger.info("3-----------------------------");
 
         for(Student student : students){
             studentModels.add(new StudentModel(student));
         }
-        logger.info("4-----------------------------");
 
         return studentModels;
     }
 
-    @Override
-    public List<Student> listStudentEntities() throws Exception {
-
-        return studentTransactionAccess.listAllStudents();
-    }
 
     @Override
     public StudentModel getStudent(String email) throws Exception{

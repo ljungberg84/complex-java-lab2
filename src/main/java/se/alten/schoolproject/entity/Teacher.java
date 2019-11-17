@@ -25,10 +25,6 @@ public class Teacher extends EntityUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @NotEmpty(message = "firstName must not be null")
     @Column(name = "firstName")
     private String firstName;
@@ -69,17 +65,6 @@ public class Teacher extends EntityUtil implements Serializable {
             throw new ResourceCreationException("Invalid requestBody");
         }
     }
-
-
-//    public Teacher(TeacherModel teacherModel) throws Exception {
-//
-//        this.firstName = teacherModel.getFirstName();
-//        this.lastName = teacherModel.getLastName();
-//        this.email = teacherModel.getEmail();
-//        //this.subject = super.parseModelsToEntities(teacherModel.getSubjects(), SubjectModel.class, Subject.class);
-//
-//        validate(this);
-//    }
 
 
     @Override

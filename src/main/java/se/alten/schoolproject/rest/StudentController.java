@@ -38,16 +38,6 @@ public class StudentController {
         return Response.ok(students).build();
     }
 
-//    @GET
-//    @Path("/entity")
-//    @Produces(APPLICATION_JSON)
-//    public Response listStudentEntities() throws Exception {
-//
-//        List<Student> students = schoolAccessLocal.listStudentEntities();
-//
-//        return Response.ok(students).build();
-//    }
-
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -97,31 +87,4 @@ public class StudentController {
 
         return Response.status(Response.Status.OK).entity(createdURI).build();
     }
-
-
-//    @PATCH
-//    @Consumes(APPLICATION_JSON)
-//    @Produces(APPLICATION_JSON)
-//    @Path("/{email}/subject")
-//    public Response addSubjectToStudent(@PathParam("email") String email, String requestSubject) throws Exception{
-//
-//        Student student = schoolAccessLocal.getStudent(email);
-//        Subject subject = new Subject(requestSubject);
-//        schoolAccessLocal.addSubject(subject);
-//        logger.info("1-----------------------------------------------");
-//        logger.info("subject: " + subject);
-//        logger.info("1-----------------------------------------------");
-//        logger.info("2");
-//        //student.getSubjectObjs().add(subject);
-//        logger.info("3");
-//
-//        Student addedStudent = schoolAccessLocal.updateStudent(student);
-//        logger.info("4");
-//
-//        return Response.status(Response.Status.OK).entity(addedStudent).build();
-//    }
-
-    //TODO: maybe bring back  patch for easier adding of teachers and subjects. parse incomming body to student entity and have -
-    //TODO: update partial method that sets all fields that is not null on incomming obj to retrieved object
-    //TODO: or just make endpoint to add and remove subject for student
 }

@@ -1,7 +1,6 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
-import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 
 import se.alten.schoolproject.entity.Subject;
@@ -25,8 +24,6 @@ public class SubjectController {
 
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
-
-    private static final Logger logger = Logger.getLogger(SubjectController.class);
 
 
     @PUT

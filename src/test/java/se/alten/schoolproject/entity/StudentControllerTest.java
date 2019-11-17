@@ -14,7 +14,6 @@
 //import se.alten.schoolproject.dao.SchoolDataAccess;
 //import se.alten.schoolproject.errorhandling.*;
 //import se.alten.schoolproject.model.StudentModel;
-//import se.alten.schoolproject.model.SubjectModelTest;
 //import se.alten.schoolproject.rest.StudentController;
 //import se.alten.schoolproject.transaction.StudentTransaction;
 //import se.alten.schoolproject.transaction.StudentTransactionAccess;

@@ -82,7 +82,6 @@ public abstract class EntityUtil {
             }
         }catch(Exception e){
 
-            logger.info(e.getMessage());
             throw new ResourceCreationException(e.getMessage());
         }
     }

@@ -46,8 +46,5 @@ public class StudentModel extends BaseModel implements Serializable  {
 
             this.subjects.add(new StudentSubjectModel(subject));
         }
-        //this.subjects = super.parseEntitiesToModels(student.getSubjects(), Subject.class, SubjectModel.class);
-
-        //validate(this);
     }
 }

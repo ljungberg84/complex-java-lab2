@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
-import se.alten.schoolproject.model.StudentModel;
-import se.alten.schoolproject.model.SubjectModel;
 
 import javax.persistence.*;
 
@@ -44,7 +42,6 @@ public class Student extends EntityUtil implements Serializable {
     private Set<Subject> subjects = new HashSet<>();
 
 
-
     @JsonIgnore
     @Transient
     private Logger logger = Logger.getLogger(Student.class);
@@ -62,24 +59,12 @@ public class Student extends EntityUtil implements Serializable {
                 this.subjects = student.getSubjects();
             }
 
-
         }catch(Exception e){
 
             logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid requestBody");
         }
     }
-
-
-//    public Student(StudentModel studentModel) throws Exception {
-//
-//        this.firstName = studentModel.getFirstName();
-//        this.lastName = studentModel.getLastName();
-//        this.email = studentModel.getEmail();
-//        this.subjects = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
-//
-//        validate(this);
-//    }
 
 
     @Override
@@ -92,6 +77,7 @@ public class Student extends EntityUtil implements Serializable {
                 lastName.equals(student.lastName) &&
                 email.equals(student.email);
     }
+
 
     @Override
     public int hashCode() {

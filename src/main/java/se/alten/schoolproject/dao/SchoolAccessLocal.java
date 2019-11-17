@@ -16,8 +16,6 @@ public interface SchoolAccessLocal {
 
     List<StudentModel> listAllStudents() throws Exception;
 
-    List<Student> listStudentEntities() throws Exception;
-
     StudentModel addStudent(Student student) throws Exception;
 
     StudentModel getStudent(String email) throws Exception;

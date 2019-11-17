@@ -11,7 +11,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class StudentSubjectModel  implements Serializable {
 
-
     private String title;
     private PersonModel teacher;
 

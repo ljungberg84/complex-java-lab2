@@ -22,14 +22,9 @@ public class Subject extends EntityUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @NotEmpty
     @Column(name = "title", unique = true)
     private String title;
-
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -43,7 +38,6 @@ public class Subject extends EntityUtil implements Serializable {
     joinColumns = {@JoinColumn(name = "subject_id")},
     inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     private Teacher teacher;
-
 
     @JsonIgnore
     @Transient

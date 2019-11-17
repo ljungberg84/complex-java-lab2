@@ -57,7 +57,7 @@ public class StudentEntityTest {
 
 
     @Test
-    public void createFromString(){
+    public void createStudentFromString(){
 
         String studentRequest = "{"+
                 "\t\"firstName\":\"test1\",\n" +
@@ -75,56 +75,6 @@ public class StudentEntityTest {
             System.out.println(e.getMessage());
             fail();
         }
-    }
-
-
-    @Test
-    public void createFromStringWithSubjects(){
-
-        String studentRequest = "{"+
-                "\t\"firstName\":\"test1\",\n" +
-                "\t\"lastName\":\"test2\",\n" +
-                "\t\"email\":\"3@gmail.com\"}";
-
-        System.out.println(studentRequest);
-
-        try{
-            Student student = new Student(studentRequest);
-            System.out.println(student.getSubjects());
-
-            assertEquals("3@gmail.com",student.getEmail());
-            assertEquals("test1", student.getFirstName());
-            assertEquals("test2", student.getLastName());
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            fail();
-        }
-    }
-
-
-    //@Test
-    public void createFromStudentModel(){
-
-        String firstName = "test";
-        String lastName = "test";
-        String email = "test@mail.com";
-
-        StudentModel studentModel = new StudentModel();
-        studentModel.setFirstName(firstName);
-        studentModel.setLastName(lastName);
-        studentModel.setEmail(email);
-        try{
-            //Student student = (Student) new Student(studentModel);
-//
-//            assertEquals(firstName, student.getFirstName());
-//            assertEquals(lastName, student.getLastName());
-//            assertEquals(email, student.getEmail());
-        }catch(Exception e){
-            fail();
-        }
-
-
     }
 
 

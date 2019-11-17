@@ -7,7 +7,6 @@ import se.alten.schoolproject.entity.Teacher;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 @Getter
@@ -42,6 +41,4 @@ public class TeacherModel extends BaseModel implements Serializable {
             this.subjects.add(new TeacherSubject(subject));
         }
     }
-
-    //TODO: add second constructor(Teacher teacher);
 }

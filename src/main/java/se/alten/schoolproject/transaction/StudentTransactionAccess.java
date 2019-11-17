@@ -12,5 +12,4 @@ public interface StudentTransactionAccess {
     Student addStudent(Student studentToAdd) throws Exception;
     void removeStudent(String email) throws Exception;
     Student updateStudent(Student student) throws Exception;
-    //void updateStudentPartial(Student studentToUpdate);
 }

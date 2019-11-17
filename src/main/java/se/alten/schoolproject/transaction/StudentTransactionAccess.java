@@ -7,7 +7,7 @@ import java.util.List;
 
 @Local
 public interface StudentTransactionAccess {
-    List listAllStudents();
+    List<Student> listAllStudents();
     Student getStudent(String email) throws Exception;
     Student addStudent(Student studentToAdd) throws Exception;
     void removeStudent(String email) throws Exception;

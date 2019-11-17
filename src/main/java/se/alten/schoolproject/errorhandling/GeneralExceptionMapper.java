@@ -24,6 +24,6 @@ public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorMessage(e.getMessage())).build();
         }
         logger.info(e.getMessage());
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorMessage(e.getMessage() + e.getStackTrace().toString())).build();
     }
 }

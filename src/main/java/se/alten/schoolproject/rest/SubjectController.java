@@ -1,9 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.handler.ssl.ApplicationProtocolNames;
 import lombok.NoArgsConstructor;
-import org.jboss.resteasy.plugins.providers.atom.Person;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
@@ -13,7 +11,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
@@ -29,45 +26,65 @@ public class SubjectController {
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 
-    @Inject
-    private ObjectMapper mapper;
-
     private static final Logger logger = Logger.getLogger("SubjectController");
 
 
-    @POST
+    @PUT
     @Produces(APPLICATION_JSON)
-    @Path("/{title}")
-    public Response addStudentToSubject(@PathParam("title") String title, String requestBody ) throws Exception {
+    @Path("/{title}/student/{email}")
+    public Response addStudentToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String studentEmail) throws Exception {
 
-        Subject subject = schoolAccessLocal.getSubjectByTitle(title);
+        logger.info("addStudent1");
+        Subject subject = schoolAccessLocal.getSubjectByTitle(subjectTitle);
+        logger.info("addStudent2");
 
-        List<String> emails = mapper.readValue(requestBody, List.class);
-        for (String email: emails) {
+        Student student = schoolAccessLocal.getStudent(studentEmail);
+        logger.info("addStudent3");
 
-            Student student = schoolAccessLocal.getStudent(email);
-            subject.getStudents().add(student);
-        }
-        subject = schoolAccessLocal.addSubject(subject);
+        //student.getSubjects().add(subject);
+
+        subject.getStudents().add(student);
+        logger.info("addStudent4");
+
+        //student.getSubjects().add(subject);
+        logger.info("addStudent5");
+
+        subject = schoolAccessLocal.updateSubject(subject);
+        logger.info("addStudent6");
+
+        //schoolAccessLocal.updateStudent(student);
+        logger.info("addStudent7");
 
         return Response.status(Response.Status.OK).entity(subject).build();
     }
 
 
-    @POST
+    @PUT
     @Produces(APPLICATION_JSON)
-    @Path("/{title}")
-    public Response addTeacherToSubject(@PathParam("title") String title, String email ) throws Exception {
+    @Path("/{title}/teacher/{email}")
+    public Response addTeacherToSubject(@PathParam("title") String title, @PathParam("email") String email ) throws Exception {
 
-        System.out.println("----------------------");
-        System.out.println("email in addStudentToSubject: " + email);
-        System.out.println("----------------------");
+        logger.info("addteaher1");
 
         Subject subject = schoolAccessLocal.getSubjectByTitle(title);
+        logger.info("addteaher2");
+
         Teacher teacher = schoolAccessLocal.getTeacherByEmail(email);
+        logger.info("addteaher3");
+        //teacher.getSubjects().add(subject);
+        logger.info("addteaher4");
+
 
         subject.setTeacher(teacher);
-        subject = schoolAccessLocal.addSubject(subject);
+
+        logger.info("addteaher5");
+
+        //schoolAccessLocal.updateTeacher(teacher);
+        logger.info("addteaher6");
+
+        subject = schoolAccessLocal.updateSubject(subject);
+        logger.info("addteaher7");
+
 
         return Response.status(Response.Status.OK).entity(subject).build();
     }

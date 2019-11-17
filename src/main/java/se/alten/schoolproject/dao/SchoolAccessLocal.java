@@ -29,8 +29,14 @@ public interface SchoolAccessLocal {
 
     Subject getSubjectByTitle(String title) throws Exception;
 
-    public Teacher addTeacher(Teacher teacher) throws Exception;
+    Subject updateSubject(Subject subject) throws Exception;
 
-    public Teacher getTeacherByEmail(String email) throws Exception;
+    List<Teacher>listAllTeachers() throws Exception;
+
+    Teacher updateTeacher(Teacher teacher) throws Exception;
+
+    Teacher addTeacher(Teacher teacher) throws Exception;
+
+    Teacher getTeacherByEmail(String email) throws Exception;
 
     }

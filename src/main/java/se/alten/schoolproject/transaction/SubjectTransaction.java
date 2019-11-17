@@ -28,26 +28,32 @@ public class SubjectTransaction implements SubjectTransactionAccess{
 
     @Override
     public Subject addSubject(Subject subject) throws ResourceCreationException {
+        try
+        {
 
-        Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.id = :id");
-        query.setParameter("id", subject.getId());
-        if(!query.getResultList().isEmpty()){
 
-            throw new ResourceCreationException(String.format("Record with id: %s already exist", subject.getId()));
+            Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.id = :id");
+            query.setParameter("id", subject.getId());
+            if (!query.getResultList().isEmpty()) {
+
+                throw new ResourceCreationException(String.format("Record with id: %s already exist", subject.getId()));
+            }
+
+            logger.info("---------------------------------");
+            logger.info("subject before database: " + subject);
+            logger.info("---------------------------------");
+
+            Subject addedSubject = entityManager.merge(subject);
+            entityManager.flush();
+
+            logger.info("---------------------------------");
+            logger.info("subject after database: " + subject);
+            logger.info("---------------------------------");
+
+            return addedSubject;
+        }catch (Exception e){
+            throw new ResourceCreationException("Error adding subject:" + e.getMessage());
         }
-
-        logger.info("---------------------------------");
-        logger.info("subject before database: " + subject);
-        logger.info("---------------------------------");
-
-        Subject addedSubject = entityManager.merge(subject);
-        entityManager.flush();
-
-        logger.info("---------------------------------");
-        logger.info("subject after database: " + subject);
-        logger.info("---------------------------------");
-
-        return addedSubject;
     }
 
 
@@ -64,5 +70,18 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             entityManager.flush();
             throw new ResourceNotFoundException(String.format("Subject not found: %s, error: %s", title, e.getMessage()));
         }
+    }
+
+    @Override
+    public Subject updateSubject(Subject subject) throws Exception {
+        try{
+            Subject updatedSubject = entityManager.merge(subject);
+            entityManager.flush();
+
+            return updatedSubject;
+        }catch(Exception e){
+            throw new ResourceCreationException("error updating subject: " + e.getMessage());
+        }
+
     }
 }

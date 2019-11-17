@@ -4,8 +4,6 @@ import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
-import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
-import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,9 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -79,11 +75,11 @@ public class StudentController {
     public Response addStudent(String studentBody, @Context UriInfo uriInfo) throws Exception {
 
         Student student = new Student(studentBody);
-        if(student.getSubjects() != null && !student.getSubjects().isEmpty()){
-            for (String subject: student.getSubjects()) {
-                student.getSubjectObjs().add(schoolAccessLocal.getSubjectByTitle(subject));
-            }
-        }
+//        if(student.getSubjects() != null && !student.getSubjects().isEmpty()){
+//            for (String subject: student.getSubjects()) {
+//                student.getSubjectObjs().add(schoolAccessLocal.getSubjectByTitle(subject));
+//            }
+//        }
         Student addedStudent = schoolAccessLocal.addStudent(student);
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudent.getEmail()).build();
 
@@ -129,7 +125,7 @@ public class StudentController {
         logger.info("subject: " + subject);
         logger.info("1-----------------------------------------------");
         logger.info("2");
-        student.getSubjectObjs().add(subject);
+        //student.getSubjectObjs().add(subject);
         logger.info("3");
 
         Student addedStudent = schoolAccessLocal.updateStudent(student);

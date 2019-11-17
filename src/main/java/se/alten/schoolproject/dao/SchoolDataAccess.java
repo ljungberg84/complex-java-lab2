@@ -110,9 +110,28 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
         return subjectTransactionAccess.addSubject(subject);
     }
 
+    @Override
     public Subject getSubjectByTitle(String title) throws Exception{
 
         return subjectTransactionAccess.getSubjectByTitle(title);
+    }
+
+    @Override
+    public Subject updateSubject(Subject subject) throws Exception{
+
+        return subjectTransactionAccess.updateSubject(subject);
+    }
+
+    @Override
+    public List<Teacher> listAllTeachers() throws Exception {
+
+        return teacherTransactionAccess.listAllTeachers();
+    }
+
+    @Override
+    public Teacher updateTeacher(Teacher teacher) throws Exception {
+
+        return teacherTransactionAccess.updateTeacher(teacher);
     }
 
     public Teacher addTeacher(Teacher teacher) throws Exception{

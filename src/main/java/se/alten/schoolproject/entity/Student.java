@@ -11,10 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Entity
@@ -23,9 +20,12 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+//@EqualsAndHashCode(exclude="")
+//@ToString(exclude = "subjects")
 public class Student extends EntityUtil implements Serializable {
 
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,18 +44,10 @@ public class Student extends EntityUtil implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-//    @ManyToMany(targetEntity = Subject.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-//    @JoinTable(name = "student_subject",
-//            joinColumns=@JoinColumn(name="student_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"))
-    @ManyToMany(mappedBy = "students")
-    private Set<Subject> subjectObjs = new HashSet<>();
 
-
-    //@JsonIgnore
-    //TODO: rename this field and set name for jackson to know
-    @Transient
-    private List<String> subjects = new ArrayList<>();
+    @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private Set<Subject> subjects = new HashSet<>();
 
 
 
@@ -75,10 +67,10 @@ public class Student extends EntityUtil implements Serializable {
 
                 this.subjects = student.getSubjects();
             }
-            if(student.getSubjectObjs() != null && !student.getSubjectObjs().isEmpty()){
-
-                this.subjectObjs = student.getSubjectObjs();
-            }
+//            if(student.getSubjectObjs() != null && !student.getSubjectObjs().isEmpty()){
+//
+//                this.subjectObjs = student.getSubjectObjs();
+//            }
 
         }catch(Exception e){
 
@@ -93,8 +85,25 @@ public class Student extends EntityUtil implements Serializable {
         this.firstName = studentModel.getFirstName();
         this.lastName = studentModel.getLastName();
         this.email = studentModel.getEmail();
-        this.subjectObjs = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
+        this.subjects = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
 
         validate(this);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) &&
+                firstName.equals(student.firstName) &&
+                lastName.equals(student.lastName) &&
+                email.equals(student.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
     }
 }

@@ -45,10 +45,10 @@ public class StudentModel extends BaseModel implements Serializable {
 
         System.out.println("...................................");
         System.out.println(student);
-        student.getSubjectObjs().forEach(s -> System.out.println("sub in student to model: " + s));
+        //student.getSubjects().forEach(s -> System.out.println("sub in student to model: " + s));
         System.out.println("...................................");
 
-        this.subjects = super.parseEntitiesToModels(student.getSubjectObjs(), Subject.class, SubjectModel.class);
+        this.subjects = super.parseEntitiesToModels(student.getSubjects(), Subject.class, SubjectModel.class);
 
         validate(this);
     }

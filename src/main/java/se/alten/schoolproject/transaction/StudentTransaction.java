@@ -26,8 +26,6 @@ public class StudentTransaction implements StudentTransactionAccess{
 
 
     @Override
-    //@NamedEntityGraph()
-    //@EntityGraph(value = "Item.characteristics")
     public List<Student> listAllStudents() {
 
 //        Query query = entityManager.createQuery("SELECT s from Student s JOIN FETCH s.subjectObjs t");

@@ -1,5 +1,6 @@
 package se.alten.schoolproject.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
@@ -7,7 +8,9 @@ import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -17,8 +20,12 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class Teacher extends EntityUtil {
+//@EqualsAndHashCode(exclude="subjects")
+//@ToString(exclude = "subjects")
+public class Teacher extends EntityUtil implements Serializable {
+
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +44,9 @@ public class Teacher extends EntityUtil {
     @Column(name = "email", unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "subjects")
+    @OneToMany(mappedBy = "teacher")//, fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private Set<Subject> subjects = new HashSet<>();
-
 
     @JsonIgnore
     @Transient
@@ -75,4 +82,21 @@ public class Teacher extends EntityUtil {
 //
 //        validate(this);
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(id, teacher.id) &&
+                firstName.equals(teacher.firstName) &&
+                lastName.equals(teacher.lastName) &&
+                email.equals(teacher.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
+    }
 }

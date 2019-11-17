@@ -2,13 +2,14 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.*;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 @Entity
 @Table(name = "subject")
@@ -21,15 +22,13 @@ public class Subject extends EntityUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @NotEmpty
     @Column(name = "title", unique = true)
     private String title;
-
-
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -46,10 +45,9 @@ public class Subject extends EntityUtil implements Serializable {
     private Teacher teacher;
 
 
-
     @JsonIgnore
     @Transient
-    private Logger logger = Logger.getLogger("Subject");
+    private Logger logger = Logger.getLogger(Subject.class);
 
 
     public Subject(String newSubject) throws Exception{

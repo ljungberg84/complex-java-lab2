@@ -3,6 +3,7 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import javax.persistence.*;
@@ -12,7 +13,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Entity
 @Table(name = "teacher")
@@ -25,9 +25,9 @@ public class Teacher extends EntityUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @NotEmpty(message = "firstName must not be null")
     @Column(name = "firstName")
@@ -48,7 +48,7 @@ public class Teacher extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    private Logger logger = Logger.getLogger("Student");
+    private Logger logger = Logger.getLogger(Teacher.class);
 
 
     public Teacher(String jsonBody) throws Exception{

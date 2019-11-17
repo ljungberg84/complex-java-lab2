@@ -1,12 +1,18 @@
 package se.alten.schoolproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.BaseModel;
 
+import javax.persistence.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -15,16 +21,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
-//@MappedSuperclass
+@MappedSuperclass
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class EntityUtil {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
 
 
     private static ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-    private Logger logger = Logger.getLogger("EntityUtil");
 
 
     protected <T extends EntityUtil> T create(String object, Class<T> targetClass) throws Exception{
@@ -35,10 +45,16 @@ public abstract class EntityUtil {
             return entity;
 
         }catch(Exception e){
+
             logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid request-body: " + e.getMessage() );
         }
     }
+
+    @JsonIgnore
+    @Transient
+    private Logger logger = Logger.getLogger(EntityUtil.class);
+
 
 
     <M extends BaseModel, E extends EntityUtil> Set<E> parseModelsToEntities(

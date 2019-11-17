@@ -1,6 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -22,7 +22,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/students")
 public class StudentController {
 
-    private static final Logger logger = Logger.getLogger("StudentController");
+    private static final Logger logger = Logger.getLogger(StudentController.class);
 
 
     @Inject
@@ -37,6 +37,16 @@ public class StudentController {
 
         return Response.ok(students).build();
     }
+
+//    @GET
+//    @Path("/entity")
+//    @Produces(APPLICATION_JSON)
+//    public Response listStudentEntities() throws Exception {
+//
+//        List<Student> students = schoolAccessLocal.listStudentEntities();
+//
+//        return Response.ok(students).build();
+//    }
 
 
     @GET

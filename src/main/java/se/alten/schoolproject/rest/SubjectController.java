@@ -1,6 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 
 import se.alten.schoolproject.entity.Subject;
@@ -12,8 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,7 +26,7 @@ public class SubjectController {
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 
-    private static final Logger logger = Logger.getLogger("SubjectController");
+    private static final Logger logger = Logger.getLogger(SubjectController.class);
 
 
     @PUT
@@ -33,18 +34,7 @@ public class SubjectController {
     @Path("/{title}/student/{email}")
     public Response addStudentToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String studentEmail) throws Exception {
 
-        //SubjectModel subject = schoolAccessLocal.getSubjectByTitle(subjectTitle);
-
-        //Student student = schoolAccessLocal.getStudent(studentEmail);
-
         SubjectModel updatedSubject = schoolAccessLocal.addStudentToSubject(subjectTitle, studentEmail);
-
-
-        //subject.getStudents().add(student);
-
-
-        //subject = schoolAccessLocal.updateSubject(subject);
-
 
         return Response.status(Response.Status.OK).entity(updatedSubject).build();
     }
@@ -70,6 +60,18 @@ public class SubjectController {
         return Response.status(Response.Status.OK).entity(subjects).build();
     }
 
+
+    @GET
+    @Path("/{title}")
+    @Produces(APPLICATION_JSON)
+    public Response getSubjectByTitle(@PathParam(value = "title") String title, @Context UriInfo uriInfo) throws Exception{
+
+        SubjectModel subject = schoolAccessLocal.getSubjectByTitle(title);
+
+        return Response.status(Response.Status.OK).entity(subject).build();
+    }
+
+
     @POST
     @Produces(APPLICATION_JSON)
     @Consumes(APPLICATION_JSON)
@@ -78,6 +80,8 @@ public class SubjectController {
         Subject subject = new Subject(subjectBody);
         SubjectModel addedSubject = schoolAccessLocal.addSubject(subject);
 
-        return Response.status(Response.Status.CREATED).entity(addedSubject).build();
+        URI createdUri = uriInfo.getAbsolutePathBuilder().path(addedSubject.getTitle()).build();
+
+        return Response.status(Response.Status.CREATED).entity(createdUri).build();
     }
 }

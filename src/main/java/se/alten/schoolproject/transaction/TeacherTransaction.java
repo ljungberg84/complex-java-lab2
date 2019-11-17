@@ -1,5 +1,6 @@
 package se.alten.schoolproject.transaction;
 
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.entity.Teacher;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
@@ -10,6 +11,9 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class TeacherTransaction implements TeacherTransactionAccess {
+
+
+    private static final Logger logger = Logger.getLogger(TeacherTransaction.class);
 
 
     @PersistenceContext(unitName="school")
@@ -33,7 +37,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
             query.setParameter("email", teacher.getEmail());
             if(!query.getResultList().isEmpty()){
 
-                throw new ResourceCreationException(String.format("Teacher with email: %s already exist", teacher.getEmail()));
+                throw new Exception(String.format("Teacher with email: %s already exist", teacher.getEmail()));
             }
             teacher = entityManager.merge(teacher);
             entityManager.flush();
@@ -41,7 +45,8 @@ public class TeacherTransaction implements TeacherTransactionAccess {
             return teacher;
 
         }catch(Exception e){
-            throw new ResourceCreationException(String.format("Error adding teacher: %s , &s", teacher.getEmail(),  e.getMessage()));
+
+            throw new ResourceCreationException(e.getMessage());
         }
     }
 

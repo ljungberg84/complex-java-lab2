@@ -49,6 +49,11 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
         return studentModels;
     }
 
+    @Override
+    public List<Student> listStudentEntities() throws Exception {
+
+        return studentTransactionAccess.listAllStudents();
+    }
 
     @Override
     public StudentModel getStudent(String email) throws Exception{

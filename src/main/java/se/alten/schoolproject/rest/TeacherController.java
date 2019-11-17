@@ -1,6 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 
 import se.alten.schoolproject.entity.Teacher;
@@ -14,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -26,7 +26,7 @@ public class TeacherController {
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 
-    private static final Logger logger = Logger.getLogger("TeacherController");
+    private static final Logger logger = Logger.getLogger(TeacherController.class);
 
 
 
@@ -39,21 +39,26 @@ public class TeacherController {
         return Response.status(Response.Status.OK).entity(teachers).build();
     }
 
+
+    @GET
+    @Path("/{email}")
+    @Produces(APPLICATION_JSON)
+    public Response getTeacherByEmail(@PathParam(value = "email") String email, @Context UriInfo uriInfo) throws Exception{
+
+        TeacherModel teacher = schoolAccessLocal.getTeacherByEmail(email);
+
+        return Response.status(Response.Status.OK).entity(teacher).build();
+    }
+
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response addTeacher(@Context UriInfo uriInfo, String teacher) throws Exception {
-        logger.info("1");
 
         Teacher newTeacher = new Teacher(teacher);
-        logger.info("2");
         TeacherModel addedTeacher = schoolAccessLocal.addTeacher(newTeacher);
-        logger.info("3");
-        logger.info(addedTeacher.toString());
 
         URI createdUri = uriInfo.getAbsolutePathBuilder().path(addedTeacher.getEmail()).build();
-
-        logger.info("4");
 
         return Response.status(Response.Status.CREATED).entity(createdUri).build();
     }

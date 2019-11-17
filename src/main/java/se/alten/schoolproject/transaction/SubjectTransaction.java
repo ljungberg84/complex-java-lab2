@@ -1,5 +1,6 @@
 package se.alten.schoolproject.transaction;
 
+import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
@@ -8,11 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class SubjectTransaction implements SubjectTransactionAccess{
 
-    private static final Logger logger = Logger.getLogger("StudentTransaction");
+    private static final Logger logger = Logger.getLogger(SubjectTransaction.class);
 
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;

@@ -43,8 +43,7 @@ public class Student extends EntityUtil implements Serializable {
     private String email;
 
 
-    @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    //@JsonBackReference
+    @ManyToMany(mappedBy = "students" , fetch = FetchType.LAZY)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Subject> subjects = new HashSet<>();
 
 

@@ -43,7 +43,6 @@ public class TeacherTransaction implements TeacherTransactionAccess {
         }catch(Exception e){
             throw new ResourceCreationException(String.format("Error adding teacher: %s , &s", teacher.getEmail(),  e.getMessage()));
         }
-
     }
 
 
@@ -58,7 +57,6 @@ public class TeacherTransaction implements TeacherTransactionAccess {
         }catch(Exception e){
             throw new ResourceCreationException("Error updating resource: " + e.getMessage());
         }
-
     }
 
 

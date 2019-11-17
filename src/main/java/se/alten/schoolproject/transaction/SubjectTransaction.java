@@ -1,6 +1,5 @@
 package se.alten.schoolproject.transaction;
 
-import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
@@ -30,30 +29,22 @@ public class SubjectTransaction implements SubjectTransactionAccess{
 
     @Override
     public Subject addSubject(Subject subject) throws ResourceCreationException {
-        try
-        {
-
-
+        try {
             Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.id = :id");
             query.setParameter("id", subject.getId());
+
             if (!query.getResultList().isEmpty()) {
 
                 throw new ResourceCreationException(String.format("Record with id: %s already exist", subject.getId()));
             }
 
-            logger.info("---------------------------------");
-            logger.info("subject before database: " + subject);
-            logger.info("---------------------------------");
-
             Subject addedSubject = entityManager.merge(subject);
             entityManager.flush();
 
-            logger.info("---------------------------------");
-            logger.info("subject after database: " + subject);
-            logger.info("---------------------------------");
-
             return addedSubject;
+
         }catch (Exception e){
+
             throw new ResourceCreationException("Error adding subject:" + e.getMessage());
         }
     }
@@ -69,6 +60,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             return (Subject) query.getSingleResult();
 
         }catch (Exception e){
+
             entityManager.flush();
             throw new ResourceNotFoundException(String.format("Subject not found: %s, error: %s", title, e.getMessage()));
         }
@@ -82,7 +74,9 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             entityManager.flush();
 
             return updatedSubject;
+
         }catch(Exception e){
+
             throw new ResourceCreationException("error updating subject: " + e.getMessage());
         }
     }

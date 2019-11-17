@@ -3,40 +3,45 @@ package se.alten.schoolproject.dao;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.entity.Teacher;
+import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.TeacherModel;
 
 import javax.ejb.Local;
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.util.List;
 
 @Local
 public interface SchoolAccessLocal {
 
-    List listAllStudents() throws Exception;
+    List<StudentModel> listAllStudents() throws Exception;
 
-    Student addStudent(Student student) throws Exception;
+    StudentModel addStudent(Student student) throws Exception;
 
-    Student getStudent(String email) throws Exception;
+    StudentModel getStudent(String email) throws Exception;
 
     void removeStudent(String email) throws Exception;
 
-    Student updateStudent(Student student) throws Exception;
+    StudentModel updateStudent(Student student) throws Exception;
+
+    List<SubjectModel> listAllSubjects() throws Exception;
+
+    SubjectModel addSubject(Subject subject) throws Exception;
+
+    SubjectModel addStudentToSubject(String subjectTitle, String studentEmail) throws Exception;
+
+    SubjectModel addTeacherToSubject(String subjectTitle, String teacherEmail) throws Exception;
 
 
-    //void updateStudentPartial(String studentModel);
+    SubjectModel getSubjectByTitle(String title) throws Exception;
 
-    List listAllSubjects();
+    SubjectModel updateSubject(Subject subject) throws Exception;
 
-    Subject addSubject(Subject subject) throws Exception;
+    List<TeacherModel>listAllTeachers() throws Exception;
 
-    Subject getSubjectByTitle(String title) throws Exception;
+    TeacherModel updateTeacher(Teacher teacher) throws Exception;
 
-    Subject updateSubject(Subject subject) throws Exception;
+    TeacherModel addTeacher(Teacher teacher) throws Exception;
 
-    List<Teacher>listAllTeachers() throws Exception;
-
-    Teacher updateTeacher(Teacher teacher) throws Exception;
-
-    Teacher addTeacher(Teacher teacher) throws Exception;
-
-    Teacher getTeacherByEmail(String email) throws Exception;
-
+    TeacherModel getTeacherByEmail(String email) throws Exception;
     }

@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 @Getter
 @Setter
-//@EqualsAndHashCode(exclude="")
-//@ToString(exclude = "subjects")
 public class Student extends EntityUtil implements Serializable {
 
 
@@ -46,7 +44,7 @@ public class Student extends EntityUtil implements Serializable {
 
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
+    //@JsonBackReference
     private Set<Subject> subjects = new HashSet<>();
 
 
@@ -67,10 +65,7 @@ public class Student extends EntityUtil implements Serializable {
 
                 this.subjects = student.getSubjects();
             }
-//            if(student.getSubjectObjs() != null && !student.getSubjectObjs().isEmpty()){
-//
-//                this.subjectObjs = student.getSubjectObjs();
-//            }
+
 
         }catch(Exception e){
 
@@ -80,15 +75,15 @@ public class Student extends EntityUtil implements Serializable {
     }
 
 
-    public Student(StudentModel studentModel) throws Exception {
-
-        this.firstName = studentModel.getFirstName();
-        this.lastName = studentModel.getLastName();
-        this.email = studentModel.getEmail();
-        this.subjects = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
-
-        validate(this);
-    }
+//    public Student(StudentModel studentModel) throws Exception {
+//
+//        this.firstName = studentModel.getFirstName();
+//        this.lastName = studentModel.getLastName();
+//        this.email = studentModel.getEmail();
+//        this.subjects = super.parseModelsToEntities(studentModel.getSubjects(), SubjectModel.class, Subject.class);
+//
+//        validate(this);
+//    }
 
 
     @Override

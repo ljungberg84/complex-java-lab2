@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 @Getter
 @Setter
-//@EqualsAndHashCode(exclude="subjects")
-//@ToString(exclude = "subjects")
 public class Teacher extends EntityUtil implements Serializable {
 
 

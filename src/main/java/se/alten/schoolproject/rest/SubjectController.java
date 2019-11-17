@@ -1,11 +1,10 @@
 package se.alten.schoolproject.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
-import se.alten.schoolproject.entity.Student;
+
 import se.alten.schoolproject.entity.Subject;
-import se.alten.schoolproject.entity.Teacher;
+import se.alten.schoolproject.model.SubjectModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -34,67 +33,39 @@ public class SubjectController {
     @Path("/{title}/student/{email}")
     public Response addStudentToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String studentEmail) throws Exception {
 
-        logger.info("addStudent1");
-        Subject subject = schoolAccessLocal.getSubjectByTitle(subjectTitle);
-        logger.info("addStudent2");
+        //SubjectModel subject = schoolAccessLocal.getSubjectByTitle(subjectTitle);
 
-        Student student = schoolAccessLocal.getStudent(studentEmail);
-        logger.info("addStudent3");
+        //Student student = schoolAccessLocal.getStudent(studentEmail);
 
-        //student.getSubjects().add(subject);
+        SubjectModel updatedSubject = schoolAccessLocal.addStudentToSubject(subjectTitle, studentEmail);
 
-        subject.getStudents().add(student);
-        logger.info("addStudent4");
 
-        //student.getSubjects().add(subject);
-        logger.info("addStudent5");
+        //subject.getStudents().add(student);
 
-        subject = schoolAccessLocal.updateSubject(subject);
-        logger.info("addStudent6");
 
-        //schoolAccessLocal.updateStudent(student);
-        logger.info("addStudent7");
+        //subject = schoolAccessLocal.updateSubject(subject);
 
-        return Response.status(Response.Status.OK).entity(subject).build();
+
+        return Response.status(Response.Status.OK).entity(updatedSubject).build();
     }
 
 
     @PUT
     @Produces(APPLICATION_JSON)
     @Path("/{title}/teacher/{email}")
-    public Response addTeacherToSubject(@PathParam("title") String title, @PathParam("email") String email ) throws Exception {
+    public Response addTeacherToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String teacherEmail ) throws Exception {
 
-        logger.info("addteaher1");
+        SubjectModel updatedSubject = schoolAccessLocal.addTeacherToSubject(subjectTitle, teacherEmail);
 
-        Subject subject = schoolAccessLocal.getSubjectByTitle(title);
-        logger.info("addteaher2");
-
-        Teacher teacher = schoolAccessLocal.getTeacherByEmail(email);
-        logger.info("addteaher3");
-        //teacher.getSubjects().add(subject);
-        logger.info("addteaher4");
-
-
-        subject.setTeacher(teacher);
-
-        logger.info("addteaher5");
-
-        //schoolAccessLocal.updateTeacher(teacher);
-        logger.info("addteaher6");
-
-        subject = schoolAccessLocal.updateSubject(subject);
-        logger.info("addteaher7");
-
-
-        return Response.status(Response.Status.OK).entity(subject).build();
+        return Response.status(Response.Status.OK).entity(updatedSubject).build();
     }
 
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response listSubjects(){
+    public Response listSubjects() throws Exception{
 
-        List<Subject> subjects = schoolAccessLocal.listAllSubjects();
+        List<SubjectModel> subjects = schoolAccessLocal.listAllSubjects();
 
         return Response.status(Response.Status.OK).entity(subjects).build();
     }
@@ -105,14 +76,7 @@ public class SubjectController {
     public Response addSubjects(String subjectBody, @Context UriInfo uriInfo) throws Exception{
 
         Subject subject = new Subject(subjectBody);
-        logger.info("1-----------------------------------------------");
-        logger.info("subject controller: " + subject);
-        logger.info("1-----------------------------------------------");
-        Subject addedSubject = schoolAccessLocal.addSubject(subject);
-
-        logger.info("1-----------------------------------------------");
-        logger.info("subject controller 2: " + subject);
-        logger.info("1-----------------------------------------------");
+        SubjectModel addedSubject = schoolAccessLocal.addSubject(subject);
 
         return Response.status(Response.Status.CREATED).entity(addedSubject).build();
     }

@@ -5,31 +5,33 @@ import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class StudentModel extends BaseModel implements Serializable {
+public class StudentModel extends BaseModel implements Serializable  {
 
 
     private String firstName;
     private String lastName;
     private String email;
-    private Set<SubjectModel> subjects = new HashSet<>();
+    private List<StudentSubjectModel> subjects = new ArrayList<>();
     private static final Logger logger = Logger.getLogger("StudentModel");
 
 
     public StudentModel(String newStudent) throws Exception {
 
         StudentModel studentModel = super.create(newStudent, StudentModel.class);
+
         this.firstName = studentModel.getFirstName();
         this.lastName = studentModel.getLastName();
         this.email = studentModel.getEmail();
+
         if(studentModel.getSubjects() != null && !studentModel.getSubjects().isEmpty()){
 
             this.subjects = studentModel.getSubjects();
@@ -42,30 +44,12 @@ public class StudentModel extends BaseModel implements Serializable {
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.email = student.getEmail();
+        for(Subject subject : student.getSubjects()){
 
-        System.out.println("...................................");
-        System.out.println(student);
-        //student.getSubjects().forEach(s -> System.out.println("sub in student to model: " + s));
-        System.out.println("...................................");
+            this.subjects.add(new StudentSubjectModel(subject));
+        }
+        //this.subjects = super.parseEntitiesToModels(student.getSubjects(), Subject.class, SubjectModel.class);
 
-        this.subjects = super.parseEntitiesToModels(student.getSubjects(), Subject.class, SubjectModel.class);
-
-        validate(this);
+        //validate(this);
     }
-
-//    public static StudentModel create(Student student ) throws Exception {
-//
-//        StudentModel studentModel = new StudentModel();
-//
-//        studentModel.setFirstName(student.getFirstName());
-//        studentModel.setLastName(student.getLastName());
-//        studentModel.setEmail(student.getEmail());
-//
-////        student.getSubjectObjs().forEach(LambdaExceptionWrapper.handlingConsumerWrapper(subject ->
-////                studentModel.getSubjectObjs().add(SubjectModel.create(subject)), Exception.class));
-//
-//        validate(studentModel);
-//
-//        return studentModel;
-//    }
 }

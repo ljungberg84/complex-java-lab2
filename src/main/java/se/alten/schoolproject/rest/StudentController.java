@@ -3,7 +3,7 @@ package se.alten.schoolproject.rest;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -29,26 +29,11 @@ public class StudentController {
     private SchoolAccessLocal schoolAccessLocal;
 
 
-//--------------------------------------------------------------------------------------
-// temp to check how id is handled for entity
-//    @GET
-//    @Produces(APPLICATION_JSON)
-//    public Response listStudents() throws Exception{
-//
-//        List<Student> students = schoolAccessLocal.listAllStudents();
-//        return Response.ok(students).build();
-//    }
-//--------------------------------------------------------------------------------------
-
-
-    // temp to check how id is handled for entity
     @GET
     @Produces(APPLICATION_JSON)
     public Response listStudents() throws Exception {
-        logger.info("get 1");
 
-        List<Student> students = schoolAccessLocal.listAllStudents();
-        logger.info("get 2");
+        List<StudentModel> students = schoolAccessLocal.listAllStudents();
 
         return Response.ok(students).build();
     }
@@ -59,13 +44,9 @@ public class StudentController {
     @Path("/{email}")
     public Response getStudent(@PathParam("email") String email) throws Exception{
 
-        Student student = schoolAccessLocal.getStudent(email);
-
-        //StudentModel studentModel = new StudentModel(student);
+        StudentModel student = schoolAccessLocal.getStudent(email);
 
         return Response.status(Response.Status.OK).entity(student).build();
-        //return Response.status(Response.Status.OK).entity(studentModel).build();
-
     }
 
 
@@ -75,12 +56,8 @@ public class StudentController {
     public Response addStudent(String studentBody, @Context UriInfo uriInfo) throws Exception {
 
         Student student = new Student(studentBody);
-//        if(student.getSubjects() != null && !student.getSubjects().isEmpty()){
-//            for (String subject: student.getSubjects()) {
-//                student.getSubjectObjs().add(schoolAccessLocal.getSubjectByTitle(subject));
-//            }
-//        }
-        Student addedStudent = schoolAccessLocal.addStudent(student);
+        StudentModel addedStudent = schoolAccessLocal.addStudent(student);
+
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(addedStudent.getEmail()).build();
 
         return Response.status(Response.Status.CREATED).entity(createdURI).build();
@@ -104,7 +81,7 @@ public class StudentController {
     public Response updateStudent( String requestBody, @Context UriInfo uriInfo) throws Exception {
 
         Student student = new Student(requestBody);
-        Student updatedStudent = schoolAccessLocal.updateStudent(student);
+        StudentModel updatedStudent = schoolAccessLocal.updateStudent(student);
 
         URI createdURI = uriInfo.getAbsolutePathBuilder().path(updatedStudent.getEmail()).build();
 
@@ -112,27 +89,27 @@ public class StudentController {
     }
 
 
-    @PATCH
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    @Path("/{email}/subject")
-    public Response addSubjectToStudent(@PathParam("email") String email, String requestSubject) throws Exception{
-
-        Student student = schoolAccessLocal.getStudent(email);
-        Subject subject = new Subject(requestSubject);
-        schoolAccessLocal.addSubject(subject);
-        logger.info("1-----------------------------------------------");
-        logger.info("subject: " + subject);
-        logger.info("1-----------------------------------------------");
-        logger.info("2");
-        //student.getSubjectObjs().add(subject);
-        logger.info("3");
-
-        Student addedStudent = schoolAccessLocal.updateStudent(student);
-        logger.info("4");
-
-        return Response.status(Response.Status.OK).entity(addedStudent).build();
-    }
+//    @PATCH
+//    @Consumes(APPLICATION_JSON)
+//    @Produces(APPLICATION_JSON)
+//    @Path("/{email}/subject")
+//    public Response addSubjectToStudent(@PathParam("email") String email, String requestSubject) throws Exception{
+//
+//        Student student = schoolAccessLocal.getStudent(email);
+//        Subject subject = new Subject(requestSubject);
+//        schoolAccessLocal.addSubject(subject);
+//        logger.info("1-----------------------------------------------");
+//        logger.info("subject: " + subject);
+//        logger.info("1-----------------------------------------------");
+//        logger.info("2");
+//        //student.getSubjectObjs().add(subject);
+//        logger.info("3");
+//
+//        Student addedStudent = schoolAccessLocal.updateStudent(student);
+//        logger.info("4");
+//
+//        return Response.status(Response.Status.OK).entity(addedStudent).build();
+//    }
 
     //TODO: maybe bring back  patch for easier adding of teachers and subjects. parse incomming body to student entity and have -
     //TODO: update partial method that sets all fields that is not null on incomming obj to retrieved object

@@ -28,19 +28,13 @@ public abstract class EntityUtil {
 
 
     protected <T extends EntityUtil> T create(String object, Class<T> targetClass) throws Exception{
-        logger.info("--------------------------1");
         try{
             T entity = mapper.readValue(object, targetClass);
-            logger.info("--------------------------2");
-
             validate(entity);
-            logger.info("--------------------------3");
 
             return entity;
 
         }catch(Exception e){
-            logger.info("--------------------------4");
-
             logger.info(e.getMessage());
             throw new ResourceCreationException("Invalid request-body: " + e.getMessage() );
         }

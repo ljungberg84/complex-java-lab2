@@ -3,8 +3,6 @@ package se.alten.schoolproject.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
-import se.alten.schoolproject.model.StudentModel;
-import se.alten.schoolproject.model.SubjectModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -18,9 +16,6 @@ import java.util.logging.Logger;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@EqualsAndHashCode(exclude="dependent_list")
-//@ToString(exclude = {"students", "teacher"})
-
 public class Subject extends EntityUtil implements Serializable {
 
 
@@ -37,7 +32,7 @@ public class Subject extends EntityUtil implements Serializable {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "subject_student",
         joinColumns = {@JoinColumn(name = "subject_id")},
@@ -74,13 +69,16 @@ public class Subject extends EntityUtil implements Serializable {
     }
 
 
-    public Subject(SubjectModel subjectModel) throws Exception {
-
-        this.title = subjectModel.getTitle();
-        this.students = super.parseModelsToEntities(subjectModel.getStudents(), StudentModel.class, Student.class);
-
-        validate(this);
-    }
+//    public Subject(SubjectModel subjectModel) throws Exception {
+//
+//        this.title = subjectModel.getTitle();
+//        for (Student student : subjectModel.getStudents()){
+//
+//        }
+//            //this.students = super.parseModelsToEntities(subjectModel.getStudents(), StudentModel.class, Student.class);
+//
+//        validate(this);
+//    }
 
     @Override
     public boolean equals(Object o) {

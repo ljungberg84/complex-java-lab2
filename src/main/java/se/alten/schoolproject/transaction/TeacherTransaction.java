@@ -15,6 +15,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
+
     @Override
     public List<Teacher> listAllTeachers() throws Exception {
 
@@ -22,6 +23,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
 
         return query.getResultList();
     }
+
 
     @Override
     public Teacher addTeacher(Teacher teacher) throws Exception{
@@ -33,13 +35,17 @@ public class TeacherTransaction implements TeacherTransactionAccess {
 
                 throw new ResourceCreationException(String.format("Teacher with email: %s already exist", teacher.getEmail()));
             }
+            teacher = entityManager.merge(teacher);
+            entityManager.flush();
 
-            return entityManager.merge(teacher);
+            return teacher;
+
         }catch(Exception e){
             throw new ResourceCreationException(String.format("Error adding teacher: %s , &s", teacher.getEmail(),  e.getMessage()));
         }
 
     }
+
 
     @Override
     public Teacher updateTeacher(Teacher teacher) throws Exception {
@@ -55,6 +61,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
 
     }
 
+
     @Override
     public Teacher getTeacherByEmail(String email) throws Exception{
         try {
@@ -67,8 +74,5 @@ public class TeacherTransaction implements TeacherTransactionAccess {
 
             throw new ResourceNotFoundException(String.format("Teacher with email: %s not found", email));
         }
-
-
-
     }
 }

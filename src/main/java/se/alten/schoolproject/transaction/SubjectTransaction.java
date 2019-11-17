@@ -18,6 +18,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
+
     @Override
     public List<Subject> listAllSubjects() {
 
@@ -25,6 +26,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
 
         return query.getResultList();
     }
+
 
     @Override
     public Subject addSubject(Subject subject) throws ResourceCreationException {
@@ -72,6 +74,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
         }
     }
 
+
     @Override
     public Subject updateSubject(Subject subject) throws Exception {
         try{
@@ -82,6 +85,5 @@ public class SubjectTransaction implements SubjectTransactionAccess{
         }catch(Exception e){
             throw new ResourceCreationException("error updating subject: " + e.getMessage());
         }
-
     }
 }

@@ -2,22 +2,23 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.entity.Teacher;
 
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class TeacherModel extends BaseModel {
+public class TeacherModel extends BaseModel implements Serializable {
 
     private String firstName;
     private String lastName;
     private String email;
-    private Subject subject;
+    private List<TeacherSubject> subjects = new ArrayList<>();
     private static final Logger logger = Logger.getLogger("StudentModel");
 
 
@@ -27,9 +28,20 @@ public class TeacherModel extends BaseModel {
         this.firstName = teacherModel.getFirstName();
         this.lastName = teacherModel.getLastName();
         this.email = teacherModel.getEmail();
-        if(teacherModel.getSubject() != null){
-            this.subject = teacherModel.getSubject();
+        if(teacherModel.getSubjects() != null){
+           this.subjects.addAll(teacherModel.getSubjects());
         }
     }
+
+    public TeacherModel(Teacher teacher)throws Exception{
+
+        this.firstName = teacher.getFirstName();
+        this.lastName = teacher.getLastName();
+        this.email = teacher.getEmail();
+        for (Subject subject : teacher.getSubjects()){
+            this.subjects.add(new TeacherSubject(subject));
+        }
+    }
+
     //TODO: add second constructor(Teacher teacher);
 }

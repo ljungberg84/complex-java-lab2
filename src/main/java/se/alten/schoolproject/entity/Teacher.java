@@ -6,7 +6,6 @@ import lombok.*;
 import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -46,8 +45,6 @@ public class Teacher extends EntityUtil implements Serializable {
     @JsonIgnore
     @Transient
     private Logger logger = Logger.getLogger(Teacher.class);
-    //private Logger logger = LoggerFactory.getLogger(Teacher.class);
-    //private Logger logger = Logger.getLogger(Teacher.class);
 
 
     public Teacher(String jsonBody) throws Exception{

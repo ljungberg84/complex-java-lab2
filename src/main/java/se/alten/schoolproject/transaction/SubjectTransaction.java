@@ -5,7 +5,6 @@ import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,9 +14,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
-    //@Inject
     private Logger logger = Logger.getLogger(SubjectTransaction.class);
-    //private static final Logger logger = Logger.getLogger(SubjectTransaction.class);
 
 
     @Override
@@ -43,7 +40,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
         }catch(PersistenceException e){
 
             logger.info(e.getMessage(), e);
-            throw new ResourceCreationException(String.format("Subject with title: %s already exist, Error: %s", subject.getTitle(), e.getMessage()));
+            throw new ResourceCreationException(String.format("Subject: %s already exist", subject.getTitle()));
 
         }
         catch (Exception e){

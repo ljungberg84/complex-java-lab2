@@ -5,7 +5,6 @@ import lombok.*;
 import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.*;
 
@@ -44,21 +43,13 @@ public class Student extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    //@Inject
-    //private Logger logger = LoggerFactory.getLogger(Student.class);
     private Logger logger = Logger.getLogger(Student.class);
-    //private static final Logger logger = Logger.getLogger(Student.class);
-    //private Logger logger = Logger.getLogger(Student.class);
 
 
     public Student(String jsonBody) throws Exception{
 
         try{
-            System.out.println("--------------------------------------------");
-            System.out.println("logger: " + logger);
-            System.out.println("--------------------------------------------");
             logger.info("Creating Student");
-
             Student student = super.create(jsonBody, Student.class);
             this.firstName = student.getFirstName();
             this.lastName= student.getLastName();
@@ -67,9 +58,6 @@ public class Student extends EntityUtil implements Serializable {
 
                 this.subjects = student.getSubjects();
             }
-            System.out.println("--------------------------------------------");
-            System.out.println("logger: " + logger);
-            System.out.println("--------------------------------------------");
 
 
         }catch(Exception e){

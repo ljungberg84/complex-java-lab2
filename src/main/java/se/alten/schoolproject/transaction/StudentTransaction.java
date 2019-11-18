@@ -7,7 +7,6 @@ import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -25,8 +24,6 @@ public class StudentTransaction implements StudentTransactionAccess{
     private EntityManager entityManager;
 
     private Logger logger = Logger.getLogger(StudentTransaction.class);
-    //private static final Logger logger = Logger.getLogger(StudentTransaction.class);
-
 
 
     @Override

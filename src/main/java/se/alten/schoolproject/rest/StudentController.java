@@ -1,7 +1,6 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;

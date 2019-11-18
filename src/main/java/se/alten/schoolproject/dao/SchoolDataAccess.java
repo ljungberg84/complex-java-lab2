@@ -20,7 +20,6 @@ import java.util.List;
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
-    //private static final Logger logger = Logger.getLogger("SchoolDataAccess");
 
     @Inject
     StudentTransactionAccess studentTransactionAccess;

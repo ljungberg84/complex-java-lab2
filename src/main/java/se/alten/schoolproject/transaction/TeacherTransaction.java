@@ -5,7 +5,6 @@ import se.alten.schoolproject.entity.Teacher;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -15,7 +14,6 @@ import java.util.List;
 public class TeacherTransaction implements TeacherTransactionAccess {
 
     private Logger logger = Logger.getLogger(TeacherTransaction.class);
-    //private static final Logger logger = Logger.getLogger(TeacherTransaction.class);
 
 
     @PersistenceContext(unitName="school")

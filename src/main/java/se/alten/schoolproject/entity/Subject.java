@@ -40,9 +40,6 @@ public class Subject extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    //@Inject
-    //private Logger logger;
-    //private Logger logger = LoggerFactory.getLogger(Subject.class);
     private Logger logger = Logger.getLogger(Subject.class);
 
 

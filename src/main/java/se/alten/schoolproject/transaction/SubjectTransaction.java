@@ -1,21 +1,23 @@
 package se.alten.schoolproject.transaction;
 
-import org.jboss.resteasy.logging.Logger;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.inject.Inject;
+import javax.persistence.*;
 import java.util.List;
 
 public class SubjectTransaction implements SubjectTransactionAccess{
 
-    private static final Logger logger = Logger.getLogger(SubjectTransaction.class);
 
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
+
+    //@Inject
+    private Logger logger = Logger.getLogger(SubjectTransaction.class);
+    //private static final Logger logger = Logger.getLogger(SubjectTransaction.class);
 
 
     @Override
@@ -33,18 +35,20 @@ public class SubjectTransaction implements SubjectTransactionAccess{
             Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.id = :id");
             query.setParameter("id", subject.getId());
 
-            if (!query.getResultList().isEmpty()) {
-
-                throw new ResourceCreationException(String.format("Record with id: %s already exist", subject.getId()));
-            }
-
             Subject addedSubject = entityManager.merge(subject);
             entityManager.flush();
 
             return addedSubject;
 
-        }catch (Exception e){
+        }catch(PersistenceException e){
 
+            logger.info(e.getMessage(), e);
+            throw new ResourceCreationException(String.format("Subject with title: %s already exist, Error: %s", subject.getTitle(), e.getMessage()));
+
+        }
+        catch (Exception e){
+
+            logger.info(e.getMessage(), e);
             throw new ResourceCreationException("Error adding subject:" + e.getMessage());
         }
     }
@@ -61,7 +65,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
 
         }catch (Exception e){
 
-            entityManager.flush();
+            logger.info(e.getMessage(), e);
             throw new ResourceNotFoundException(String.format("Subject not found: %s, error: %s", title, e.getMessage()));
         }
     }
@@ -77,6 +81,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
 
         }catch(Exception e){
 
+            logger.info(e.getMessage(), e);
             throw new ResourceCreationException("error updating subject: " + e.getMessage());
         }
     }

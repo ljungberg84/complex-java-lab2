@@ -22,6 +22,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/subjects")
 public class SubjectController {
 
+
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 

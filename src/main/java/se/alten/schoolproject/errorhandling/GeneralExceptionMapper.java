@@ -1,21 +1,24 @@
 package se.alten.schoolproject.errorhandling;
 
+
+import org.apache.log4j.Logger;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.logging.Logger;
 
 @Provider
 public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
 
-    private static final Logger logger = Logger.getLogger("GeneralExceptionMapper");
+
+    private Logger logger = Logger.getLogger(GeneralExceptionMapper.class);
 
 
     @Override
     public Response toResponse(Exception e) {
 
         if(e instanceof ResourceCreationException){
-            logger.info(e.getMessage());
+
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(e.getMessage())).build();
         }
 

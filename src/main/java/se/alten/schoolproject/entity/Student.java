@@ -2,9 +2,11 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import org.jboss.resteasy.logging.Logger;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.*;
 
 import javax.validation.constraints.Email;
@@ -18,11 +20,11 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Named
 public class Student extends EntityUtil implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
-
 
     @NotEmpty(message = "firstName must not be null")
     @Column(name = "firstName")
@@ -37,19 +39,26 @@ public class Student extends EntityUtil implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-
     @ManyToMany(mappedBy = "students" , fetch = FetchType.LAZY)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Subject> subjects = new HashSet<>();
 
-
     @JsonIgnore
     @Transient
+    //@Inject
+    //private Logger logger = LoggerFactory.getLogger(Student.class);
     private Logger logger = Logger.getLogger(Student.class);
+    //private static final Logger logger = Logger.getLogger(Student.class);
+    //private Logger logger = Logger.getLogger(Student.class);
 
 
     public Student(String jsonBody) throws Exception{
 
         try{
+            System.out.println("--------------------------------------------");
+            System.out.println("logger: " + logger);
+            System.out.println("--------------------------------------------");
+            logger.info("Creating Student");
+
             Student student = super.create(jsonBody, Student.class);
             this.firstName = student.getFirstName();
             this.lastName= student.getLastName();
@@ -58,10 +67,14 @@ public class Student extends EntityUtil implements Serializable {
 
                 this.subjects = student.getSubjects();
             }
+            System.out.println("--------------------------------------------");
+            System.out.println("logger: " + logger);
+            System.out.println("--------------------------------------------");
+
 
         }catch(Exception e){
 
-            logger.info(e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new ResourceCreationException("Invalid requestBody");
         }
     }

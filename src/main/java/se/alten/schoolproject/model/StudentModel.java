@@ -7,7 +7,6 @@ import se.alten.schoolproject.entity.Subject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
@@ -19,7 +18,6 @@ public class StudentModel extends BaseModel implements Serializable  {
     private String lastName;
     private String email;
     private List<StudentSubjectModel> subjects = new ArrayList<>();
-    private static final Logger logger = Logger.getLogger("StudentModel");
 
 
     public StudentModel(String newStudent) throws Exception {

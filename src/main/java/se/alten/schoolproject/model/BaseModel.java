@@ -18,7 +18,6 @@ import java.util.Set;
 
 public abstract class BaseModel {
 
-
     private static ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

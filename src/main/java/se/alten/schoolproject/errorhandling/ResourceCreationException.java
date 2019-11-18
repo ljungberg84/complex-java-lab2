@@ -5,6 +5,7 @@ package se.alten.schoolproject.errorhandling;
 public class ResourceCreationException extends Exception {
 
     public ResourceCreationException(String message) {
+
         super(message);
     }
 }

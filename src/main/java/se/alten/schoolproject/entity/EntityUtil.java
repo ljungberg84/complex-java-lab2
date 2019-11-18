@@ -1,13 +1,11 @@
 package se.alten.schoolproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.jboss.resteasy.logging.Logger;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.model.BaseModel;
@@ -46,15 +44,10 @@ public abstract class EntityUtil {
 
         }catch(Exception e){
 
-            logger.info(e.getMessage());
+            //logger.info(e.getMessage(), e);
             throw new ResourceCreationException("Invalid request-body: " + e.getMessage() );
         }
     }
-
-    @JsonIgnore
-    @Transient
-    private Logger logger = Logger.getLogger(EntityUtil.class);
-
 
 
     <M extends BaseModel, E extends EntityUtil> Set<E> parseModelsToEntities(
@@ -82,6 +75,7 @@ public abstract class EntityUtil {
             }
         }catch(Exception e){
 
+            //logger.info(e.getMessage(), e);
             throw new ResourceCreationException(e.getMessage());
         }
     }

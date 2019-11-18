@@ -2,14 +2,13 @@ package se.alten.schoolproject.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import org.jboss.resteasy.logging.Logger;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.*;
-//import java.util.logging.Logger;
 
 @Entity
 @Table(name = "subject")
@@ -41,18 +40,24 @@ public class Subject extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
+    //@Inject
+    //private Logger logger;
+    //private Logger logger = LoggerFactory.getLogger(Subject.class);
     private Logger logger = Logger.getLogger(Subject.class);
 
 
     public Subject(String newSubject) throws Exception{
 
         try{
+            logger.info("Creating Subject");
+
             Subject subject = super.create(newSubject, Subject.class);
             this.title = subject.getTitle();
             if(subject.getStudents() != null && !subject.getStudents().isEmpty()){
 
                 this.students = subject.getStudents();
             }
+
         }catch(Exception e){
 
             logger.info(e.getMessage());

@@ -1,12 +1,13 @@
 package se.alten.schoolproject.transaction;
 
-import org.jboss.resteasy.logging.Logger;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -19,10 +20,13 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 @Default
 public class StudentTransaction implements StudentTransactionAccess{
 
-    private static final Logger logger = Logger.getLogger(StudentTransaction.class);
 
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
+
+    private Logger logger = Logger.getLogger(StudentTransaction.class);
+    //private static final Logger logger = Logger.getLogger(StudentTransaction.class);
+
 
 
     @Override
@@ -45,7 +49,7 @@ public class StudentTransaction implements StudentTransactionAccess{
 
         }catch(Exception e){
 
-            logger.info(e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new ResourceNotFoundException(e.getMessage());
         }
     }
@@ -68,6 +72,7 @@ public class StudentTransaction implements StudentTransactionAccess{
 
         }catch(RuntimeException e){
 
+            logger.info(e.getMessage(), e);
             throw new ResourceCreationException(String.format("Could not add subject: %s", e.getMessage()));
         }
     }
@@ -83,7 +88,7 @@ public class StudentTransaction implements StudentTransactionAccess{
 
         }catch(Exception e){
 
-            logger.info(e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new ResourceNotFoundException(e.getMessage());
         }
     }
@@ -101,7 +106,7 @@ public class StudentTransaction implements StudentTransactionAccess{
 
         }catch(Exception e){
 
-            logger.info(student + " " + e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new ResourceCreationException(e.getMessage());
         }
     }

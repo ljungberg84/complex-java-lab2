@@ -16,12 +16,11 @@ import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
-    private static final Logger logger = Logger.getLogger("SchoolDataAccess");
+    //private static final Logger logger = Logger.getLogger("SchoolDataAccess");
 
     @Inject
     StudentTransactionAccess studentTransactionAccess;

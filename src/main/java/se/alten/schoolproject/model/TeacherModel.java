@@ -7,7 +7,6 @@ import se.alten.schoolproject.entity.Teacher;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
@@ -17,8 +16,7 @@ public class TeacherModel extends BaseModel implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private List<TeacherSubject> subjects = new ArrayList<>();
-    private static final Logger logger = Logger.getLogger("StudentModel");
+    private List<TeacherSubjectModel> subjects = new ArrayList<>();
 
 
     public TeacherModel(String newTeacher) throws Exception {
@@ -38,7 +36,7 @@ public class TeacherModel extends BaseModel implements Serializable {
         this.lastName = teacher.getLastName();
         this.email = teacher.getEmail();
         for (Subject subject : teacher.getSubjects()){
-            this.subjects.add(new TeacherSubject(subject));
+            this.subjects.add(new TeacherSubjectModel(subject));
         }
     }
 }

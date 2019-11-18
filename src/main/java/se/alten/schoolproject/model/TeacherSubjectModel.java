@@ -13,12 +13,12 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class TeacherSubject implements Serializable {
+public class TeacherSubjectModel implements Serializable {
 
     private String title;
     private List<PersonModel> students = new ArrayList<>();
 
-    public TeacherSubject(Subject subject) {
+    public TeacherSubjectModel(Subject subject) {
 
         this.title = subject.getTitle();
         for(Student student : subject.getStudents()){

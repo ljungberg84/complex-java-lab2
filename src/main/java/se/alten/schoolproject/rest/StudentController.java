@@ -1,7 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
-import org.jboss.resteasy.logging.Logger;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
@@ -21,8 +21,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @NoArgsConstructor
 @Path("/students")
 public class StudentController {
-
-    private static final Logger logger = Logger.getLogger(StudentController.class);
 
 
     @Inject

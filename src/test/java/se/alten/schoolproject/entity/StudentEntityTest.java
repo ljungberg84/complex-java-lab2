@@ -11,9 +11,7 @@ import org.junit.runner.RunWith;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 import se.alten.schoolproject.errorhandling.ThrowingConsumer;
-import se.alten.schoolproject.model.BaseModel;
-import se.alten.schoolproject.model.StudentModel;
-import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.*;
 
 import javax.validation.*;
 
@@ -41,6 +39,11 @@ public class StudentEntityTest {
                 .addClass(LambdaExceptionWrapper.class)
                 .addClass(EntityUtil.class)
                 .addClass(BaseModel.class)
+                .addClass(PersonModel.class)
+                .addClass(SubjectModel.class)
+                .addClass(StudentSubjectModel.class)
+                .addClass(TeacherModel.class)
+                .addClass(TeacherSubjectModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -71,7 +74,8 @@ public class StudentEntityTest {
             assertEquals("test1", student.getFirstName());
             assertEquals("test2", student.getLastName());
 
-        }catch(Exception e){
+        }catch(Exception e) {
+
             System.out.println(e.getMessage());
             fail();
         }

@@ -11,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 public class GeneralExceptionMapper implements ExceptionMapper <Exception> {
 
 
-    private Logger logger = Logger.getLogger(GeneralExceptionMapper.class);
+    private static final Logger logger = Logger.getLogger(GeneralExceptionMapper.class);
 
 
     @Override

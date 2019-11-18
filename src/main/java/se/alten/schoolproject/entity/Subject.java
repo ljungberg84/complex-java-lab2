@@ -40,7 +40,7 @@ public class Subject extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    private Logger logger = Logger.getLogger(Subject.class);
+    private static final Logger logger = Logger.getLogger(Subject.class);
 
 
     public Subject(String newSubject) throws Exception{

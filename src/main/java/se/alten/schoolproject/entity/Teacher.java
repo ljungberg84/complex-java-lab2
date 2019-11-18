@@ -44,7 +44,7 @@ public class Teacher extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    private Logger logger = Logger.getLogger(Teacher.class);
+    private static final Logger logger = Logger.getLogger(Teacher.class);
 
 
     public Teacher(String jsonBody) throws Exception{

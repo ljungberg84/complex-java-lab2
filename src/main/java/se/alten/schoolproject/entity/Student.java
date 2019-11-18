@@ -19,7 +19,6 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Named
 public class Student extends EntityUtil implements Serializable {
 
 
@@ -43,7 +42,7 @@ public class Student extends EntityUtil implements Serializable {
 
     @JsonIgnore
     @Transient
-    private Logger logger = Logger.getLogger(Student.class);
+    private static final Logger logger = Logger.getLogger(Student.class);
 
 
     public Student(String jsonBody) throws Exception{

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TeacherTransaction implements TeacherTransactionAccess {
 
-    private Logger logger = Logger.getLogger(TeacherTransaction.class);
+    private static final Logger logger = Logger.getLogger(TeacherTransaction.class);
 
 
     @PersistenceContext(unitName="school")

@@ -23,7 +23,7 @@ public class StudentTransaction implements StudentTransactionAccess{
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
-    private Logger logger = Logger.getLogger(StudentTransaction.class);
+    private static final Logger logger = Logger.getLogger(StudentTransaction.class);
 
 
     @Override

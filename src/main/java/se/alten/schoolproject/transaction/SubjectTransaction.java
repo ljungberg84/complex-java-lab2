@@ -14,7 +14,7 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
 
-    private Logger logger = Logger.getLogger(SubjectTransaction.class);
+    private static final Logger logger = Logger.getLogger(SubjectTransaction.class);
 
 
     @Override

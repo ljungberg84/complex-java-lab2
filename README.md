@@ -1,3 +1,49 @@
+--------------------------------------------------------------
+
+# base url: localhost:8080/school
+
+subject:
+  {
+    "title": "string"
+  }
+
+student:
+  {
+    "firstName":"String",
+    "lastName": "String",
+    "email": "String"
+  }
+
+teacher:
+  {
+    "firstName":"String",
+    "lastName": "String",
+    "email": "String"
+  }
+
+# add student, subject or teacher:
+
+POST:
+  * /students
+  * /subjects
+  * /teachers
+
+
+# add student or teacher to subject:
+
+PUT(no body):
+  * /subjects/{title}/student/{email}
+
+  * /subjects/{title}/teacher/{email}
+
+
+GET:
+  * /students
+  * /subjects
+  * /teachers
+  
+--------------------------------------------------------
+
 # Schoolproject
 
 Small project for teaching purposes.

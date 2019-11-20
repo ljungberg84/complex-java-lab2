@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -55,17 +56,20 @@ public class StudentTransaction implements StudentTransactionAccess{
     @Override
     public Student addStudent(Student student) throws Exception{
         try {
+            logger.info(String.format("Adding student: %s to db", student));
+
             Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email");
             query.setParameter("email", student.getEmail());
-            if (!query.getResultList().isEmpty()) {
-
-                throw new ResourceCreationException("Record containing email already exist");
-            }
 
             Student addedStudent = entityManager.merge(student);
             entityManager.flush();
 
             return addedStudent;
+
+        }catch(PersistenceException e){
+
+            logger.info(e.getMessage(), e);
+            throw new ResourceCreationException(String.format("Student: %s already exist", student.getEmail()));
 
         }catch(RuntimeException e){
 
@@ -79,6 +83,8 @@ public class StudentTransaction implements StudentTransactionAccess{
     public void removeStudent(String email) throws Exception{
 
         try{
+            logger.info(String.format("Removing student with email: %s", email));
+
             Student student = getStudent(email);
             entityManager.remove(student);
             entityManager.flush();
@@ -96,6 +102,8 @@ public class StudentTransaction implements StudentTransactionAccess{
     public Student updateStudent(Student student) throws Exception{
 
         try{
+            logger.info(String.format("Updating student: %s ", student));
+
             Student updatedStudent = entityManager.merge(student);
             entityManager.flush();
 

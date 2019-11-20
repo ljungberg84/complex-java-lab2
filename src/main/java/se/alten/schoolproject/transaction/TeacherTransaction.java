@@ -33,6 +33,8 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     public Teacher addTeacher(Teacher teacher) throws Exception{
 
         try{
+            logger.info(String.format("Adding teacher: %s to db", teacher.toString()));
+
             Query query = entityManager.createQuery("SELECT s FROM Teacher s WHERE s.email = :email");
             query.setParameter("email", teacher.getEmail());
             if(!query.getResultList().isEmpty()){
@@ -61,6 +63,8 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     public Teacher updateTeacher(Teacher teacher) throws Exception {
 
         try{
+            logger.info(String.format("Updating teacher: %s", teacher.toString()));
+
             Teacher updatedTeacher =  entityManager.merge(teacher);
             entityManager.flush();
 

@@ -1,6 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 
 import se.alten.schoolproject.entity.Subject;
@@ -26,6 +27,8 @@ public class SubjectController {
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 
+    private static Logger logger = Logger.getLogger(SubjectController.class);
+
 
     @PUT
     @Produces(APPLICATION_JSON)
@@ -33,6 +36,8 @@ public class SubjectController {
     public Response addStudentToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String studentEmail) throws Exception {
 
         SubjectModel updatedSubject = schoolAccessLocal.addStudentToSubject(subjectTitle, studentEmail);
+
+        logger.info("Building response");
 
         return Response.status(Response.Status.OK).entity(updatedSubject).build();
     }

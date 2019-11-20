@@ -29,6 +29,8 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @Override
     public Subject addSubject(Subject subject) throws ResourceCreationException {
         try {
+            logger.info(String.format("Adding subject: %s to db", subject));
+
             Query query = entityManager.createQuery("SELECT s FROM Subject s WHERE s.id = :id");
             query.setParameter("id", subject.getId());
 
@@ -71,6 +73,8 @@ public class SubjectTransaction implements SubjectTransactionAccess{
     @Override
     public Subject updateSubject(Subject subject) throws Exception {
         try{
+            logger.info(String.format("Updating subject: %s ", subject));
+
             Subject updatedSubject = entityManager.merge(subject);
             entityManager.flush();
 

@@ -33,11 +33,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     public List<StudentModel> listAllStudents() throws Exception{
 
         List<Student> students = studentTransactionAccess.listAllStudents();
-
         List<StudentModel> studentModels = new ArrayList<>();
 
         for(Student student : students){
-            studentModels.add(new StudentModel(student));
+            studentModels.add(StudentModel.create(student));
         }
 
         return studentModels;
@@ -47,14 +46,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public StudentModel getStudent(String email) throws Exception{
 
-        return new StudentModel(studentTransactionAccess.getStudent(email));
+        return StudentModel.create(studentTransactionAccess.getStudent(email));
     }
 
 
     @Override
     public StudentModel addStudent(Student student) throws Exception{
 
-        return new StudentModel(studentTransactionAccess.addStudent(student));
+        return StudentModel.create(studentTransactionAccess.addStudent(student));
     }
 
 
@@ -68,7 +67,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public StudentModel updateStudent(Student student) throws Exception{
 
-        return new StudentModel(studentTransactionAccess.updateStudent(student));
+        return StudentModel.create(studentTransactionAccess.updateStudent(student));
     }
 
 
@@ -80,7 +79,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         for (Subject subject : subjects){
 
-            subjectModels.add(new SubjectModel(subject));
+            subjectModels.add(SubjectModel.create(subject));
         }
 
         return subjectModels;
@@ -90,21 +89,21 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public SubjectModel addSubject(Subject subject)  throws Exception{
 
-        return new SubjectModel(subjectTransactionAccess.addSubject(subject));
+        return SubjectModel.create(subjectTransactionAccess.addSubject(subject));
     }
 
 
     @Override
     public SubjectModel getSubjectByTitle(String title) throws Exception{
 
-        return new SubjectModel(subjectTransactionAccess.getSubjectByTitle(title));
+        return SubjectModel.create(subjectTransactionAccess.getSubjectByTitle(title));
     }
 
 
     @Override
     public SubjectModel updateSubject(Subject subject) throws Exception{
 
-        return new SubjectModel(subjectTransactionAccess.updateSubject(subject));
+        return SubjectModel.create(subjectTransactionAccess.updateSubject(subject));
     }
 
 
@@ -116,7 +115,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         for( Teacher teacher : teachers){
 
-            teacherModels.add(new TeacherModel(teacher));
+            teacherModels.add(TeacherModel.create(teacher));
         }
 
         return teacherModels;
@@ -126,21 +125,21 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public TeacherModel updateTeacher(Teacher teacher) throws Exception {
 
-        return new TeacherModel(teacherTransactionAccess.updateTeacher(teacher));
+        return TeacherModel.create(teacherTransactionAccess.updateTeacher(teacher));
     }
 
 
     @Override
     public TeacherModel addTeacher(Teacher teacher) throws Exception{
 
-        return new TeacherModel(teacherTransactionAccess.addTeacher(teacher));
+        return TeacherModel.create(teacherTransactionAccess.addTeacher(teacher));
     }
 
 
     @Override
     public TeacherModel getTeacherByEmail(String email) throws Exception{
 
-        return new TeacherModel(teacherTransactionAccess.getTeacherByEmail(email));
+        return TeacherModel.create(teacherTransactionAccess.getTeacherByEmail(email));
     }
 
 
@@ -152,7 +151,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         subject.getStudents().add(student);
 
-        return new SubjectModel(subjectTransactionAccess.updateSubject(subject));
+        return SubjectModel.create(subjectTransactionAccess.updateSubject(subject));
     }
 
 
@@ -164,6 +163,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
         subject.setTeacher(teacher);
 
-        return new SubjectModel(subjectTransactionAccess.updateSubject(subject));
+        return SubjectModel.create(subjectTransactionAccess.updateSubject(subject));
     }
 }

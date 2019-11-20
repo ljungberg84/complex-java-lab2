@@ -39,11 +39,8 @@ public class StudentEntityTest {
                 .addClass(LambdaExceptionWrapper.class)
                 .addClass(EntityUtil.class)
                 .addClass(BaseModel.class)
-                .addClass(PersonModel.class)
                 .addClass(SubjectModel.class)
-                .addClass(StudentSubjectModel.class)
                 .addClass(TeacherModel.class)
-                .addClass(TeacherSubjectModel.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

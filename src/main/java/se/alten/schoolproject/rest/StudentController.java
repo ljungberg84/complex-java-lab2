@@ -1,6 +1,7 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
@@ -22,6 +23,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class StudentController {
 
 
+    private static Logger logger = Logger.getLogger(StudentController.class);
+
+
     @Inject
     private SchoolAccessLocal schoolAccessLocal;
 
@@ -30,6 +34,7 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response listStudents() throws Exception {
 
+        logger.info("listing studentmodels------------------------------------------------");
         List<StudentModel> students = schoolAccessLocal.listAllStudents();
 
         return Response.ok(students).build();

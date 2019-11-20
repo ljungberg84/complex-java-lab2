@@ -30,12 +30,14 @@ public class Subject extends EntityUtil implements Serializable {
         name = "subject_student",
         joinColumns = {@JoinColumn(name = "subject_id")},
         inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    //@JsonIgnoreProperties("subjects")
     private Set<Student> students = new HashSet<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subject_teacher",
     joinColumns = {@JoinColumn(name = "subject_id")},
     inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
+    @JsonIgnoreProperties("subjects")
     private Teacher teacher;
 
     @JsonIgnore

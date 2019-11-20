@@ -20,6 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Teacher extends EntityUtil implements Serializable {
 
 
@@ -39,7 +40,7 @@ public class Teacher extends EntityUtil implements Serializable {
     private String email;
 
     @OneToMany(mappedBy = "teacher")//, fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
+    //@JsonIgnoreProperties("teacher")
     private Set<Subject> subjects = new HashSet<>();
 
     @JsonIgnore

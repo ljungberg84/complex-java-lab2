@@ -16,7 +16,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 public class Subject extends EntityUtil implements Serializable {
 
 
@@ -31,14 +31,14 @@ public class Subject extends EntityUtil implements Serializable {
         name = "subject_student",
         joinColumns = {@JoinColumn(name = "subject_id")},
         inverseJoinColumns = {@JoinColumn(name = "student_id")})
-    //@JsonIgnoreProperties("subjects")
+    @JsonIgnoreProperties({ "subjects" })
     private Set<Student> students = new HashSet<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subject_teacher",
     joinColumns = {@JoinColumn(name = "subject_id")},
     inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
-    //@JsonIgnoreProperties("subjects")
+    @JsonIgnoreProperties({ "subjects" })
     private Teacher teacher;
 
     @JsonIgnore
@@ -49,7 +49,7 @@ public class Subject extends EntityUtil implements Serializable {
     public Subject(String newSubject) throws Exception{
 
         try{
-            logger.info("Creating Subject");
+            logger.info("Creating Subject entity");
 
             Subject subject = super.create(newSubject, Subject.class);
             this.title = subject.getTitle();
@@ -74,6 +74,7 @@ public class Subject extends EntityUtil implements Serializable {
         return Objects.equals(id, subject.id) &&
                 title.equals(subject.title);
     }
+
 
     @Override
     public int hashCode() {

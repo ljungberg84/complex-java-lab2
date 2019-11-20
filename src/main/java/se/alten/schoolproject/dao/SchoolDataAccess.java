@@ -1,5 +1,6 @@
 package se.alten.schoolproject.dao;
 
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.entity.Teacher;
@@ -27,6 +28,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     SubjectTransactionAccess subjectTransactionAccess;
     @Inject
     TeacherTransactionAccess teacherTransactionAccess;
+
+    private static Logger logger = Logger.getLogger(SchoolAccessLocal.class);
 
 
     @Override
@@ -146,10 +149,16 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     @Override
     public SubjectModel addStudentToSubject(String subjectTitle, String studentEmail) throws Exception{
 
+        logger.info("Retrieving Subject to append to");
         Subject subject = subjectTransactionAccess.getSubjectByTitle(subjectTitle);
+        logger.info("Retrieving Student to append  subject");
         Student student = studentTransactionAccess.getStudent(studentEmail);
 
+        logger.info("Adding  Student to subject");
+
         subject.getStudents().add(student);
+
+        logger.info("Returning response");
 
         return SubjectModel.create(subjectTransactionAccess.updateSubject(subject));
     }

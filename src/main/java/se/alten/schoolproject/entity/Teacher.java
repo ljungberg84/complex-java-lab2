@@ -1,7 +1,9 @@
 package se.alten.schoolproject.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
@@ -20,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 public class Teacher extends EntityUtil implements Serializable {
 
 
@@ -40,7 +42,7 @@ public class Teacher extends EntityUtil implements Serializable {
     private String email;
 
     @OneToMany(mappedBy = "teacher")//, fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    //@JsonIgnoreProperties("teacher")
+    @JsonIgnoreProperties({ "teacher" })
     private Set<Subject> subjects = new HashSet<>();
 
     @JsonIgnore
@@ -51,7 +53,7 @@ public class Teacher extends EntityUtil implements Serializable {
     public Teacher(String jsonBody) throws Exception{
 
         try{
-            logger.info("Creating Teacher");
+            logger.info("Creating Teacher entity");
 
             Teacher teacher = super.create(jsonBody, Teacher.class);
             this.firstName = teacher.getFirstName();

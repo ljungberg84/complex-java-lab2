@@ -46,6 +46,7 @@ public class TeacherController {
         return Response.status(Response.Status.OK).entity(teacher).build();
     }
 
+
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)

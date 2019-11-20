@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.slf4j.LoggerFactory;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -58,10 +60,15 @@ public class StudentModel implements Serializable  {
 //        }
 //    }
 
-    public static StudentModel create(Student student){
+    public static StudentModel create(Student student) throws Exception{
+        try{
+            logger.info("Creating StudentModel from entity");
 
-        logger.info("Creating StudentModel from entity");
+            return modelMapper.map(student, StudentModel.class);
+        }catch(Exception e){
 
-        return modelMapper.map(student, StudentModel.class);
+            logger.info(e.getMessage(), e);
+            throw new ResourceCreationException("Error creating StudentModel from entity");
+        }
     }
 }

@@ -18,7 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 public class Student extends EntityUtil implements Serializable {
 
 
@@ -38,7 +38,7 @@ public class Student extends EntityUtil implements Serializable {
     private String email;
 
     @ManyToMany(mappedBy = "students" , fetch = FetchType.LAZY)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    //@JsonIgnoreProperties("students")
+    @JsonIgnoreProperties({ "students" })
     private Set<Subject> subjects = new HashSet<>();
 
     @JsonIgnore
@@ -49,7 +49,7 @@ public class Student extends EntityUtil implements Serializable {
     public Student(String jsonBody) throws Exception{
 
         try{
-            logger.info("Creating Student");
+            logger.info("Creating Student entity");
             Student student = super.create(jsonBody, Student.class);
             this.firstName = student.getFirstName();
             this.lastName= student.getLastName();

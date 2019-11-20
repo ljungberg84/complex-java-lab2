@@ -33,7 +33,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     public Teacher addTeacher(Teacher teacher) throws Exception{
 
         try{
-            logger.info(String.format("Adding teacher: %s to db", teacher.toString()));
+            logger.info(String.format("Adding teacher: %s to db", teacher));
 
             Query query = entityManager.createQuery("SELECT s FROM Teacher s WHERE s.email = :email");
             query.setParameter("email", teacher.getEmail());
@@ -63,7 +63,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     public Teacher updateTeacher(Teacher teacher) throws Exception {
 
         try{
-            logger.info(String.format("Updating teacher: %s", teacher.toString()));
+            logger.info(String.format("Updating teacher: %s", teacher));
 
             Teacher updatedTeacher =  entityManager.merge(teacher);
             entityManager.flush();

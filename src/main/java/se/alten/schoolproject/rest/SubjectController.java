@@ -35,6 +35,8 @@ public class SubjectController {
     @Path("/{title}/student/{email}")
     public Response addStudentToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String studentEmail) throws Exception {
 
+        logger.info("Add student to subject");
+
         SubjectModel updatedSubject = schoolAccessLocal.addStudentToSubject(subjectTitle, studentEmail);
 
         logger.info("Building response");
@@ -49,6 +51,8 @@ public class SubjectController {
     public Response addTeacherToSubject(@PathParam("title") String subjectTitle, @PathParam("email") String teacherEmail ) throws Exception {
 
         SubjectModel updatedSubject = schoolAccessLocal.addTeacherToSubject(subjectTitle, teacherEmail);
+
+        logger.info("Building response");
 
         return Response.status(Response.Status.OK).entity(updatedSubject).build();
     }

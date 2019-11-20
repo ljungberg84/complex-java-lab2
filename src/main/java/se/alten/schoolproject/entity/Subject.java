@@ -38,7 +38,7 @@ public class Subject extends EntityUtil implements Serializable {
     @JoinTable(name = "subject_teacher",
     joinColumns = {@JoinColumn(name = "subject_id")},
     inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
-    @JsonIgnoreProperties("subjects")
+    //@JsonIgnoreProperties("subjects")
     private Teacher teacher;
 
     @JsonIgnore

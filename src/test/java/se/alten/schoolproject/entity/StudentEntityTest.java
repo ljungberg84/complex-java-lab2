@@ -8,9 +8,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
-import se.alten.schoolproject.errorhandling.ThrowingConsumer;
 import se.alten.schoolproject.model.*;
 
 import javax.validation.*;
@@ -35,8 +33,6 @@ public class StudentEntityTest {
                 .addClass(ResourceCreationException.class)
                 .addClass(Subject.class)
                 .addClass(SubjectModel.class)
-                .addClass(ThrowingConsumer.class)
-                .addClass(LambdaExceptionWrapper.class)
                 .addClass(EntityUtil.class)
                 .addClass(SubjectModel.class)
                 .addClass(TeacherModel.class)

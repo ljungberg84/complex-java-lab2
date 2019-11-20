@@ -34,7 +34,6 @@ public class StudentController {
     @Produces(APPLICATION_JSON)
     public Response listStudents() throws Exception {
 
-        logger.info("listing studentmodels------------------------------------------------");
         List<StudentModel> students = schoolAccessLocal.listAllStudents();
 
         return Response.ok(students).build();

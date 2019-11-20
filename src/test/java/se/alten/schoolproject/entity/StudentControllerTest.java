@@ -13,10 +13,10 @@
 //import se.alten.schoolproject.dao.SchoolAccessRemote;
 //import se.alten.schoolproject.dao.SchoolDataAccess;
 //import se.alten.schoolproject.errorhandling.*;
+//import se.alten.schoolproject.model.PersonModel;
 //import se.alten.schoolproject.model.StudentModel;
 //import se.alten.schoolproject.rest.StudentController;
-//import se.alten.schoolproject.transaction.StudentTransaction;
-//import se.alten.schoolproject.transaction.StudentTransactionAccess;
+//import se.alten.schoolproject.transaction.*;
 //
 //import javax.ws.rs.Consumes;
 //import javax.ws.rs.client.WebTarget;
@@ -45,8 +45,14 @@
 //                .addClass(StudentController.class)
 //                .addClass(StudentTransaction.class)
 //                .addClass(StudentTransactionAccess.class)
+//                .addClass(SubjectTransactionAccess.class)
+//                .addClass(TeacherTransactionAccess.class)
+//                .addClass(TeacherTransaction.class)
+//                .addClass(SubjectTransaction.class)
 //                .addClass(Subject.class)
-//                .addClass(SubjectModelTest.class)
+//                .addClass(EntityUtil.class)
+//                .addClass(PersonModel.class)
+//                .addClass(StudentModel.class)
 //                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
 //                .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml");
 //
@@ -57,6 +63,8 @@
 //    @Consumes(APPLICATION_JSON)
 //    @RunAsClient
 //    public void listStudentsTest(@ArquillianResteasyResource("school/students") WebTarget webTarget){
+//
+//        System.out.println(webTarget.getUri());
 //
 //    }
 //

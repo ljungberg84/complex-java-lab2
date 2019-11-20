@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.errorhandling.LambdaExceptionWrapper;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
-import se.alten.schoolproject.model.BaseModel;
 
 import javax.persistence.*;
 import javax.validation.ConstraintViolation;
@@ -16,9 +15,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @MappedSuperclass
 @Getter
@@ -44,20 +41,8 @@ public abstract class EntityUtil {
 
         }catch(Exception e){
 
-            //logger.info(e.getMessage(), e);
             throw new ResourceCreationException("Invalid request-body: " + e.getMessage() );
         }
-    }
-
-
-    <M extends BaseModel, E extends EntityUtil> Set<E> parseModelsToEntities(
-            Set<M> models, Class<M> constructorType, Class<E> targetClass ) throws Exception{
-
-        Set<E> entities = new HashSet<>();
-        models.forEach(LambdaExceptionWrapper.handlingConsumerWrapper(model ->
-                entities.add(targetClass.getDeclaredConstructor(constructorType).newInstance(model)), Exception.class));
-
-        return entities;
     }
 
 
@@ -75,7 +60,6 @@ public abstract class EntityUtil {
             }
         }catch(Exception e){
 
-            //logger.info(e.getMessage(), e);
             throw new ResourceCreationException(e.getMessage());
         }
     }

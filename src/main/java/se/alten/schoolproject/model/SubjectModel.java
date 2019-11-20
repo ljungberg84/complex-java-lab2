@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 
 import java.io.Serializable;
@@ -15,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SubjectModel extends BaseModel implements Serializable {
+public class SubjectModel implements Serializable {
 
 
     private String title;
@@ -35,29 +33,29 @@ public class SubjectModel extends BaseModel implements Serializable {
 
 
 
-    public SubjectModel(String newSubject) throws Exception {
-
-        SubjectModel subjectModel = super.create(newSubject, SubjectModel.class);
-        this.title = subjectModel.getTitle();
-        if(subjectModel.getStudents() != null && !subjectModel.getStudents().isEmpty()){
-
-            this.students = subjectModel.getStudents();
-        }
-    }
-
-
-    public SubjectModel(Subject subject ) throws Exception {
-
-        logger.info("Constructing SubjectModel from Entity");
-
-        this.title = subject.getTitle();
-        if(subject.getTeacher() != null){
-            this.teacher = new TeacherModel(subject.getTeacher());
-        }
-        for (Student student : subject.getStudents()) {
-            this.students.add(new StudentModel(student));
-        }
-    }
+//    public SubjectModel(String newSubject) throws Exception {
+//
+//        SubjectModel subjectModel = super.create(newSubject, SubjectModel.class);
+//        this.title = subjectModel.getTitle();
+//        if(subjectModel.getStudents() != null && !subjectModel.getStudents().isEmpty()){
+//
+//            this.students = subjectModel.getStudents();
+//        }
+//    }
+//
+//
+//    public SubjectModel(Subject subject ) throws Exception {
+//
+//        logger.info("Constructing SubjectModel from Entity");
+//
+//        this.title = subject.getTitle();
+//        if(subject.getTeacher() != null){
+//            this.teacher = new TeacherModel(subject.getTeacher());
+//        }
+//        for (Student student : subject.getStudents()) {
+//            this.students.add(new StudentModel(student));
+//        }
+//    }
 
     public static SubjectModel create(Subject subject){
 

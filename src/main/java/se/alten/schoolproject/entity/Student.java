@@ -5,7 +5,6 @@ import lombok.*;
 import org.apache.log4j.Logger;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
-import javax.inject.Named;
 import javax.persistence.*;
 
 import javax.validation.constraints.Email;
@@ -19,6 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Student extends EntityUtil implements Serializable {
 
 
@@ -58,7 +58,6 @@ public class Student extends EntityUtil implements Serializable {
 
                 this.subjects = student.getSubjects();
             }
-
 
         }catch(Exception e){
 

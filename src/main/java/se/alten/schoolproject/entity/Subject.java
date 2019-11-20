@@ -16,6 +16,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Subject extends EntityUtil implements Serializable {
 
 
@@ -64,17 +65,6 @@ public class Subject extends EntityUtil implements Serializable {
         }
     }
 
-
-//    public Subject(SubjectModel subjectModel) throws Exception {
-//
-//        this.title = subjectModel.getTitle();
-//        for (Student student : subjectModel.getStudents()){
-//
-//        }
-//            //this.students = super.parseModelsToEntities(subjectModel.getStudents(), StudentModel.class, Student.class);
-//
-//        validate(this);
-//    }
 
     @Override
     public boolean equals(Object o) {

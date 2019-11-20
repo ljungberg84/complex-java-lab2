@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StudentModel extends BaseModel implements Serializable  {
+public class StudentModel implements Serializable  {
 
 
     private String firstName;
@@ -30,33 +30,33 @@ public class StudentModel extends BaseModel implements Serializable  {
     private static ModelMapper modelMapper = new ModelMapper();
 
 
-    public StudentModel(String newStudent) throws Exception {
-
-        StudentModel studentModel = super.create(newStudent, StudentModel.class);
-
-        this.firstName = studentModel.getFirstName();
-        this.lastName = studentModel.getLastName();
-        this.email = studentModel.getEmail();
-
-        if(studentModel.getSubjects() != null && !studentModel.getSubjects().isEmpty()){
-
-            this.subjects = studentModel.getSubjects();
-        }
-    }
-
-
-    public StudentModel(Student student) throws Exception{
-
-        logger.info("Constructing StudentModel from Entity");
-
-        this.firstName = student.getFirstName();
-        this.lastName = student.getLastName();
-        this.email = student.getEmail();
-        for(Subject subject : student.getSubjects()){
-
-            this.subjects.add(new SubjectModel(subject));
-        }
-    }
+//    public StudentModel(String newStudent) throws Exception {
+//
+//        StudentModel studentModel = super.create(newStudent, StudentModel.class);
+//
+//        this.firstName = studentModel.getFirstName();
+//        this.lastName = studentModel.getLastName();
+//        this.email = studentModel.getEmail();
+//
+//        if(studentModel.getSubjects() != null && !studentModel.getSubjects().isEmpty()){
+//
+//            this.subjects = studentModel.getSubjects();
+//        }
+//    }
+//
+//
+//    public StudentModel(Student student) throws Exception{
+//
+//        logger.info("Constructing StudentModel from Entity");
+//
+//        this.firstName = student.getFirstName();
+//        this.lastName = student.getLastName();
+//        this.email = student.getEmail();
+//        for(Subject subject : student.getSubjects()){
+//
+//            this.subjects.add(new SubjectModel(subject));
+//        }
+//    }
 
     public static StudentModel create(Student student){
 

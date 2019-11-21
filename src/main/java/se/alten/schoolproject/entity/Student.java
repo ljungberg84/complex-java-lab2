@@ -18,7 +18,6 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
-//@ToString
 public class Student extends EntityUtil implements Serializable {
 
 

@@ -22,7 +22,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-//@ToString
 public class Teacher extends EntityUtil implements Serializable {
 
 

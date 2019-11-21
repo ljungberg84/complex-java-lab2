@@ -16,7 +16,6 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
 public class Subject extends EntityUtil implements Serializable {
 
 

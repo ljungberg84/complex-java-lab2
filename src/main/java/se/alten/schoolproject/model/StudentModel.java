@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.slf4j.LoggerFactory;
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.errorhandling.ResourceCreationException;
 
 import java.io.Serializable;
@@ -32,33 +30,6 @@ public class StudentModel implements Serializable  {
     private static ModelMapper modelMapper = new ModelMapper();
 
 
-//    public StudentModel(String newStudent) throws Exception {
-//
-//        StudentModel studentModel = super.create(newStudent, StudentModel.class);
-//
-//        this.firstName = studentModel.getFirstName();
-//        this.lastName = studentModel.getLastName();
-//        this.email = studentModel.getEmail();
-//
-//        if(studentModel.getSubjects() != null && !studentModel.getSubjects().isEmpty()){
-//
-//            this.subjects = studentModel.getSubjects();
-//        }
-//    }
-//
-//
-//    public StudentModel(Student student) throws Exception{
-//
-//        logger.info("Constructing StudentModel from Entity");
-//
-//        this.firstName = student.getFirstName();
-//        this.lastName = student.getLastName();
-//        this.email = student.getEmail();
-//        for(Subject subject : student.getSubjects()){
-//
-//            this.subjects.add(new SubjectModel(subject));
-//        }
-//    }
 
     public static StudentModel create(Student student) throws Exception{
         try{

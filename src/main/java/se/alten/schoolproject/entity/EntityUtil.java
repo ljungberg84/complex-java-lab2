@@ -57,6 +57,7 @@ public abstract class EntityUtil {
 
                 throw new ResourceCreationException("Invalid value for: " + violations.get(0).getPropertyPath() + ", " + violations.get(0).getMessage());
             }
+
         }catch(Exception e){
 
             throw new ResourceCreationException(e.getMessage());

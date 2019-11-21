@@ -34,30 +34,6 @@ public class SubjectModel implements Serializable {
 
 
 
-//    public SubjectModel(String newSubject) throws Exception {
-//
-//        SubjectModel subjectModel = super.create(newSubject, SubjectModel.class);
-//        this.title = subjectModel.getTitle();
-//        if(subjectModel.getStudents() != null && !subjectModel.getStudents().isEmpty()){
-//
-//            this.students = subjectModel.getStudents();
-//        }
-//    }
-//
-//
-//    public SubjectModel(Subject subject ) throws Exception {
-//
-//        logger.info("Constructing SubjectModel from Entity");
-//
-//        this.title = subject.getTitle();
-//        if(subject.getTeacher() != null){
-//            this.teacher = new TeacherModel(subject.getTeacher());
-//        }
-//        for (Student student : subject.getStudents()) {
-//            this.students.add(new StudentModel(student));
-//        }
-//    }
-
     public static SubjectModel create(Subject subject){
 
         logger.info("Creating SubjectModel from entity");
